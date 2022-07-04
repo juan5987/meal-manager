@@ -1,11 +1,12 @@
 export interface IUser {
   id: number;
-  name: string;
-  email: string;
   age: number;
-  actualWeight: number;
-  actualGoal: number;
   height: number;
+  sex: string;
+  username: string;
+  email: string;
+  activity: string;
+  token: string;
 }
 
 export interface IDailyIntake {
