@@ -25,6 +25,16 @@ const reducer = (
   action: Action
 ): UserState => {
   switch (action.type) {
+    case ActionType.SET_LOADING_ON:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionType.SET_LOADING_OFF:
+      return {
+        ...state,
+        loading: false,
+      };
     case ActionType.LOG_IN:
       return {
         ...state,

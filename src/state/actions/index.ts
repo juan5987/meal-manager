@@ -2,6 +2,14 @@ import { ActionType } from '../action-types';
 import { IIngredient, IMeal } from '../meal';
 import { IWeight, IUser, IDailyIntake } from '../user';
 
+export interface setLoadingOnAction {
+  type: ActionType.SET_LOADING_ON;
+}
+
+export interface setLoadingOffAction {
+  type: ActionType.SET_LOADING_OFF;
+}
+
 export interface loggingInAction {
   type: ActionType.LOG_IN;
 }
@@ -69,6 +77,8 @@ export interface updateDailyAction {
 }
 
 export type Action =
+  | setLoadingOnAction
+  | setLoadingOffAction
   | loggingInAction
   | logOutInAction
   | getMealsAction

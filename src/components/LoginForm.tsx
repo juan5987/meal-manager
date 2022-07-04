@@ -104,6 +104,7 @@ const LoginForm: React.FC<ILoginForm> = ({ isLogged, loading, errorMsg }) => {
             </>
           )}
         </div>
+        {errorMsg && <p className='login__form__error'>{errorMsg}</p>}
         <div className='login__form__stayConnected'>
           <label
             className='login__form__stayConnected__label'
@@ -140,7 +141,6 @@ const LoginForm: React.FC<ILoginForm> = ({ isLogged, loading, errorMsg }) => {
           Connexion
         </button>
       </form>
-      {errorMsg && <p className='login__form__error'>{errorMsg}</p>}
     </div>
   );
 };
