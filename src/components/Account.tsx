@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { RootState } from '../state';
 import { AppDispatch } from '../state/store';
 import { connect, ConnectedProps } from 'react-redux';
+
+import Footer from './Footer';
+
 import '../styles/account.sass';
 
 interface IProfil extends PropsFromRedux {}
@@ -44,6 +47,7 @@ const Account: React.FC<IProfil> = ({ user }) => {
           </ul>
         </nav>
       </div>
+      <Footer />
     </div>
   );
 };
