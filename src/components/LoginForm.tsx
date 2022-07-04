@@ -5,6 +5,7 @@ import { EyeOff, Eye } from 'react-feather';
 
 import { RootState } from '../state';
 import { loggingIn } from '../state/action-creators';
+import Footer from './Footer';
 
 import '../styles/login.sass';
 
@@ -141,6 +142,7 @@ const LoginForm: React.FC<ILoginForm> = ({ isLogged, loading, errorMsg }) => {
           Connexion
         </button>
       </form>
+      <Footer />
     </div>
   );
 };
