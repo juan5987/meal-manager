@@ -1,5 +1,13 @@
 import { ActionType } from '../action-types';
-import { IUser } from '../user';
+import { IMeal, IIngredient } from '../meal';
+import { IUser, IWeight, IDailyIntake } from '../user';
+import {
+  getMealsAction,
+  getMealsSuccessAction,
+  getMealsFailedAction,
+  getIngredientsAction,
+  getIngredientsSuccessAction,
+} from '../actions';
 
 export const loggingIn = (email: string, password: string) => {
   return {
@@ -28,5 +36,75 @@ export const loggingFailed = (errorMsg: string) => {
 export const setLoadingOn = () => {
   return {
     type: ActionType.SET_LOADING_ON,
+  };
+};
+
+export const getMeals = (userId: number): getMealsAction => {
+  return {
+    type: ActionType.GET_MEALS,
+    payload: userId,
+  };
+};
+
+export const getMealsSuccess = (meals: IMeal[]): getMealsSuccessAction => {
+  return {
+    type: ActionType.GET_MEALS_SUCCESS,
+    payload: meals,
+  };
+};
+
+export const getMealsFailed = (errorMsg: string): getMealsFailedAction => {
+  return {
+    type: ActionType.GET_MEALS_FAILED,
+    payload: errorMsg,
+  };
+};
+
+export const getIngredients = (): getIngredientsAction => {
+  return {
+    type: ActionType.GET_INGREDIENTS,
+  };
+};
+
+export const getIngredientsSuccess = (
+  ingredients: IIngredient[]
+): getIngredientsSuccessAction => {
+  return {
+    type: ActionType.GET_INGREDIENTS_SUCCESS,
+    payload: ingredients,
+  };
+};
+
+export const getIngredientsFailed = () => {
+  return {
+    type: ActionType.GET_INGREDIENTS_FAILED,
+  };
+};
+
+export const getWeights = (userId: number) => {
+  return {
+    type: ActionType.GET_WEIGHTS,
+    payload: userId,
+  };
+};
+
+export const getWeightsSuccess = (weights: IWeight[]) => {
+  return {
+    type: ActionType.GET_WEIGHTS_SUCCESS,
+    payload: weights,
+  };
+};
+
+export const getDaily = (userId: number) => {
+  return {
+    type: ActionType.GET_DAILY,
+    payload: userId,
+  };
+};
+
+export const updateDaily = (daily: IDailyIntake) => {
+  return {
+    type: ActionType.UPDATE_DAILY,
+    payload: daily,
   };
 };
