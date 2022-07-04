@@ -23,6 +23,16 @@ const reducer = (
   action: Action
 ): UserState => {
   switch (action.type) {
+    case ActionType.LOG_IN:
+      return {
+        ...state,
+        isLogged: true,
+      };
+    case ActionType.LOG_OUT:
+      return {
+        ...state,
+        isLogged: false,
+      };
     default:
       return state;
   }
