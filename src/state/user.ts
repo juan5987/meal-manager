@@ -10,7 +10,6 @@ export interface IUser {
 }
 
 export interface IDailyIntake {
-  id: number;
   calorie: number;
   proteinPC: number;
   protein: number;
