@@ -3,7 +3,7 @@ import { IMeal, IIngredient, INutrition } from '../meal';
 import { IDailyIntake, IUser, IWeight } from '../user';
 
 export interface loggingInAction {
-  type: ActionType.LOGGING_IN;
+  type: ActionType.LOG_IN;
 }
 
 export interface logOutInAction {
