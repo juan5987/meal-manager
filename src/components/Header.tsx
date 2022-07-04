@@ -151,7 +151,13 @@ const Header: React.FC<IHeader> = ({ isLogged, logOut }) => {
               </Link>
             </li>
             <li className='header__navbar-desktop__list__element'>
-              Mon compte
+              <Link
+                onClick={handleClick}
+                className='header__navbar-desktop__list__element__link'
+                to='/account'
+              >
+                Mon compte
+              </Link>
             </li>
             <li className='header__navbar-desktop__list__element'>
               {isLogged ? (
