@@ -28,14 +28,14 @@ const LoginForm: React.FC<ILoginForm> = ({ isLogged, loading, errorMsg }) => {
     setPasswordVisibility(!passwordVisibility);
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({
       ...formValues,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     dispatch(loggingIn(formValues.email, formValues.password));
   };

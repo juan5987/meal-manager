@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Middleware } from 'redux';
 import { ActionType } from '../state/action-types';
 import {
   loggingSuccess,
@@ -17,7 +18,7 @@ import {
 } from '../state/action-creators';
 import { sortByDate } from '../utils/sort';
 
-const mainMiddleware = (store: any) => (next: any) => (action: any) => {
+const mainMiddleware: Middleware = (store) => (next) => (action) => {
   switch (action.type) {
     case ActionType.LOG_IN: {
       store.dispatch(setLoadingOn());
