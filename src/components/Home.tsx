@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import calculatorImg from '../images/home_calculator.png';
 import planningImg from '../images/home_planning.png';
 import dashboardImg from '../images/home_dashboard.png';
+import Footer from './Footer';
 
 import '../styles/home.sass';
 
@@ -132,6 +133,7 @@ const Home = () => {
           Inscription
         </Link>
       </div>
+      <Footer />
     </div>
   );
 };
