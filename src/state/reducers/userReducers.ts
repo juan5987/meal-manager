@@ -5,7 +5,7 @@ import { IUser, IDailyIntake, IWeight } from '../user';
 export interface UserState {
   isLogged: boolean;
   loading: boolean;
-  user: IUser | {};
+  user: IUser;
   dailyIntake: IDailyIntake | {};
   weight: IWeight[] | [];
   loggingErrorMsg: string;
@@ -14,7 +14,16 @@ export interface UserState {
 const initialState: UserState = {
   isLogged: false,
   loading: false,
-  user: {},
+  user: {
+    id: 0,
+    age: 0,
+    height: 0,
+    sex: '',
+    username: '',
+    email: '',
+    activity: '',
+    token: '',
+  },
   dailyIntake: {},
   weight: [],
   loggingErrorMsg: '',
