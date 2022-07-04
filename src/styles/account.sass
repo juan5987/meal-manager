@@ -1,0 +1,53 @@
+.profil
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    min-height: 100vh
+    background-image: url('../images/food-3270461.jpg')
+    background-size: cover
+
+    &__wrapper
+        background-color: white
+        padding: 2em
+        
+        &__title
+            margin-bottom: 1em
+            font-size: 2rem
+            padding: .5em
+            text-align: center
+            background-color: rgb(40, 39, 42)
+            color: white
+
+        &__subtitle
+            color: rgb(40, 39, 42)
+            text-align: center
+            margin-bottom: 1em
+            font-size: 1.5rem
+
+        &__navbar
+
+            &__list
+                list-style: none
+
+                &__element
+                    margin-bottom: 1em
+
+                    &:last-child
+                        margin-bottom: 0
+
+                    &__link
+                        display: block
+                        font-weight: bold
+                        text-decoration: none
+                        font-size: 1.3rem
+                        padding: 1em 2em
+                        text-align: center
+                        color: rgb(40, 39, 42)
+                        background-color: rgb(238, 195, 4)
+                        border-radius: 15px
+
+                        &:hover
+                            cursor: pointer
+                            background-color: rgb(40, 39, 42)
+                            color: white
