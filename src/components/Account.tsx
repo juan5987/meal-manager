@@ -22,7 +22,7 @@ const Account: React.FC<IProfil> = ({ user }) => {
           <ul className='profil__wrapper__navbar__list'>
             <li className='profil__wrapper__navbar__list__element'>
               <Link
-                to='/profil/modify'
+                to='/account/modify'
                 className='profil__wrapper__navbar__list__element__link'
               >
                 Modifier mes informations personnelles

@@ -7,6 +7,7 @@ import Header from './Header';
 import LoginForm from './LoginForm';
 import Home from './Home';
 import Account from './Account';
+import AccountModif from './AccountModif';
 
 import '../styles/app.sass';
 
@@ -20,6 +21,7 @@ const App: React.FC<IApp> = ({ isLogged }) => {
         <Route path='/home' element={<Home />} />
         <Route path='/login' element={<LoginForm />} />
         <Route path='/account' element={<Account />} />
+        <Route path='/account/modify' element={<AccountModif />} />
       </Routes>
     </div>
   );

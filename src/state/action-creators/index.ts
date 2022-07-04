@@ -108,3 +108,61 @@ export const updateDaily = (daily: IDailyIntake) => {
     payload: daily,
   };
 };
+
+export const updateActivity = (activity: string) => {
+  return {
+    type: ActionType.UPDATE_ACTIVITY,
+    payload: {
+      activity,
+    },
+  };
+};
+
+export const updateUsername = (username: string) => {
+  return {
+    type: ActionType.UPDATE_USERNAME,
+    payload: {
+      username,
+    },
+  };
+};
+
+export const updateAge = (age: number) => {
+  return {
+    type: ActionType.UPDATE_AGE,
+    payload: {
+      age,
+    },
+  };
+};
+
+export const updateAgeSuccess = (age: number) => {
+  return {
+    type: ActionType.UPDATE_AGE_SUCCESS,
+    payload: {
+      age,
+    },
+  };
+};
+
+export const updateUsernameSuccess = (username: string) => {
+  return {
+    type: ActionType.UPDATE_USERNAME_SUCCESS,
+    payload: { username },
+  };
+};
+
+export const updateActivitySuccess = (
+  activity:
+    | 'sédentaire'
+    | 'activité modérée'
+    | 'activité intense'
+    | 'activité extrême'
+) => {
+  return {
+    type: ActionType.UPDATE_ACTIVITY_SUCCESS,
+    payload: {
+      activity,
+    },
+  };
+};

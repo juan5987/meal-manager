@@ -80,6 +80,32 @@ const reducer = (
         dailyIntake: action.payload,
         isLogged: true,
       };
+
+    case ActionType.UPDATE_ACTIVITY_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          activity: action.payload.activity,
+        },
+      };
+    case ActionType.UPDATE_USERNAME_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          username: action.payload.username,
+        },
+      };
+    case ActionType.UPDATE_AGE_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          age: action.payload.age,
+        },
+      };
+
     default:
       return state;
   }
