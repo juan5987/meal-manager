@@ -15,6 +15,9 @@ import {
   getWeightsSuccess,
   getDaily,
   updateDaily,
+  updateActivitySuccess,
+  updateUsernameSuccess,
+  updateAgeSuccess,
 } from '../state/action-creators';
 import { sortByDate } from '../utils/sort';
 
@@ -109,6 +112,48 @@ const mainMiddleware: Middleware = (store) => (next) => (action) => {
               fiber: response.data.fiber,
             })
           );
+        })
+        .catch((error) => console.log(error));
+      break;
+    }
+
+    case ActionType.UPDATE_ACTIVITY: {
+      const state = store.getState();
+      axios({
+        url: `http://localhost:3001/profil/${state.user.user.id}/activity`,
+        method: 'put',
+        data: action.payload,
+      })
+        .then((response) => {
+          store.dispatch(updateActivitySuccess(action.payload.activity));
+        })
+        .catch((error) => console.log(error));
+      break;
+    }
+
+    case ActionType.UPDATE_USERNAME: {
+      const state = store.getState();
+      axios({
+        url: `http://localhost:3001/profil/${state.user.user.id}/username`,
+        method: 'put',
+        data: action.payload,
+      })
+        .then((response) => {
+          store.dispatch(updateUsernameSuccess(action.payload.username));
+        })
+        .catch((error) => console.log(error));
+      break;
+    }
+
+    case ActionType.UPDATE_AGE: {
+      const state = store.getState();
+      axios({
+        url: `http://localhost:3001/profil/${state.user.user.id}/age`,
+        method: 'put',
+        data: action.payload,
+      })
+        .then((response) => {
+          store.dispatch(updateAgeSuccess(action.payload.age));
         })
         .catch((error) => console.log(error));
       break;

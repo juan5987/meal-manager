@@ -76,6 +76,54 @@ export interface updateDailyAction {
   payload: IDailyIntake;
 }
 
+export interface updateActivityAction {
+  type: ActionType.UPDATE_ACTIVITY;
+  payload:
+    | 'sédentaire'
+    | 'activité modérée'
+    | 'activité intense'
+    | 'activité extrême';
+}
+
+export interface updateUsernameAction {
+  type: ActionType.UPDATE_USERNAME;
+  payload: {
+    username: string;
+  };
+}
+
+export interface updateAgeAction {
+  type: ActionType.UPDATE_AGE;
+  payload: {
+    age: number;
+  };
+}
+
+export interface updateAgeSuccessAction {
+  type: ActionType.UPDATE_AGE_SUCCESS;
+  payload: {
+    age: number;
+  };
+}
+
+export interface updateUsernameSuccessAction {
+  type: ActionType.UPDATE_USERNAME_SUCCESS;
+  payload: {
+    username: string;
+  };
+}
+
+export interface updateActivitySuccessAction {
+  type: ActionType.UPDATE_ACTIVITY_SUCCESS;
+  payload: {
+    activity:
+      | 'sédentaire'
+      | 'activité modérée'
+      | 'activité intense'
+      | 'activité extrême';
+  };
+}
+
 export type Action =
   | setLoadingOnAction
   | setLoadingOffAction
@@ -92,4 +140,10 @@ export type Action =
   | getDailyAction
   | logInSuccessAction
   | logInFailedAction
-  | updateDailyAction;
+  | updateActivityAction
+  | updateUsernameAction
+  | updateAgeAction
+  | updateDailyAction
+  | updateAgeSuccessAction
+  | updateUsernameSuccessAction
+  | updateActivitySuccessAction;
