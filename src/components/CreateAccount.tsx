@@ -25,8 +25,18 @@ const CreateAccount = () => {
     activity: 'Sédentaire',
   });
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    console.log(formValues);
   };
 
   return (
@@ -36,9 +46,9 @@ const CreateAccount = () => {
           Bonjour et bienvenue sur MealManager
         </h2>
         <div className='createAccount__wrapper__info'>
-          <h3 className='createAccount__wrapper__info__title'>
+          <h2 className='createAccount__wrapper__info__title'>
             Création d'un profil utilisateur
-          </h3>
+          </h2>
           <p className='createAccount__wrapper__info__text'>
             Afin de créer votre profil et de calculer vos besoins journaliers et
             votre indice de masse corporelle, nous avons besoin de quelques
@@ -73,6 +83,7 @@ const CreateAccount = () => {
                 id='age'
                 name='age'
                 value={formValues.age}
+                onChange={handleChange}
               />
               <span
                 className='createAccount__wrapper__form__element__help'
@@ -109,6 +120,7 @@ const CreateAccount = () => {
                 id='height'
                 name='height'
                 value={formValues.height}
+                onChange={handleChange}
               />
               <span
                 className='createAccount__wrapper__form__element__help'
@@ -145,6 +157,7 @@ const CreateAccount = () => {
                 id='weight'
                 name='weight'
                 value={formValues.weight}
+                onChange={handleChange}
               />
               <span
                 className='createAccount__wrapper__form__element__help'
@@ -180,16 +193,17 @@ const CreateAccount = () => {
                 id='sex'
                 name='sex'
                 value={formValues.sex}
+                onChange={handleChange}
               >
                 <option
                   className='createAccount__wrapper__form__element__input'
-                  value='Homme'
+                  value='Femme'
                 >
                   Femme
                 </option>
                 <option
                   className='createAccount__wrapper__form__element__input'
-                  value='Femme'
+                  value='Homme'
                 >
                   Homme
                 </option>
@@ -226,6 +240,7 @@ const CreateAccount = () => {
                 id='activity'
                 name='activity'
                 value={formValues.activity}
+                onChange={handleChange}
               >
                 <option
                   className='createAccount__wrapper__form__element__input'
