@@ -5,7 +5,11 @@ export interface IUser {
   sex: string;
   username: string;
   email: string;
-  activity: string;
+  activity:
+    | 'sédentaire'
+    | 'activité légère'
+    | 'activité modérée'
+    | 'activité intense';
   token: string;
 }
 

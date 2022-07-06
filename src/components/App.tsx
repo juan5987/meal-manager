@@ -10,6 +10,7 @@ import Account from './Account';
 import AccountModif from './AccountModif';
 
 import '../styles/app.sass';
+import CreateAccount from './CreateAccount';
 
 interface IApp extends PropsFromRedux {}
 
@@ -18,8 +19,9 @@ const App: React.FC<IApp> = ({ isLogged }) => {
     <div className='app'>
       <Header />
       <Routes>
-        <Route path='/home' element={<Home />} />
+        <Route path='/' element={<Home />} />
         <Route path='/login' element={<LoginForm />} />
+        <Route path='/register' element={<CreateAccount />} />
         <Route path='/account' element={<Account />} />
         <Route path='/account/modify' element={<AccountModif />} />
       </Routes>

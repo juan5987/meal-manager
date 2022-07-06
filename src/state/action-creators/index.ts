@@ -155,9 +155,9 @@ export const updateUsernameSuccess = (username: string) => {
 export const updateActivitySuccess = (
   activity:
     | 'sédentaire'
+    | 'activité légère'
     | 'activité modérée'
     | 'activité intense'
-    | 'activité extrême'
 ) => {
   return {
     type: ActionType.UPDATE_ACTIVITY_SUCCESS,

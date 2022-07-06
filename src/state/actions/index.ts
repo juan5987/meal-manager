@@ -80,9 +80,9 @@ export interface updateActivityAction {
   type: ActionType.UPDATE_ACTIVITY;
   payload:
     | 'sédentaire'
+    | 'activité légère'
     | 'activité modérée'
-    | 'activité intense'
-    | 'activité extrême';
+    | 'activité intense';
 }
 
 export interface updateUsernameAction {
@@ -118,9 +118,9 @@ export interface updateActivitySuccessAction {
   payload: {
     activity:
       | 'sédentaire'
+      | 'activité légère'
       | 'activité modérée'
-      | 'activité intense'
-      | 'activité extrême';
+      | 'activité intense';
   };
 }
 

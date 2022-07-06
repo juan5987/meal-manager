@@ -21,7 +21,7 @@ const initialState: UserState = {
     sex: '',
     username: '',
     email: '',
-    activity: '',
+    activity: 'sédentaire',
     token: '',
   },
   dailyIntake: {},

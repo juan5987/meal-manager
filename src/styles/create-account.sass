@@ -1,0 +1,122 @@
+.createAccount
+    margin-top: 60px
+    display: flex
+    justify-content: center
+    min-height: calc(100vh - 60px)
+    width: 100vw
+    background-color: red
+
+
+    &__wrapper
+        display: flex
+        flex-direction: column
+        align-items: center
+        width: 100%
+
+        &__title
+            font-size: 2.2rem
+            font-weight: bold
+            background-color: rgb(238, 195, 4)
+            color: white
+            width: 100%
+            text-align: center
+            padding: 2rem 0
+
+        &__info
+            padding: 2rem 1rem
+            background-color: #f2f2f2
+            text-align: center
+            width: 100%
+
+            &__title
+                margin-bottom: 1rem
+                font-size: 1.4rem
+
+            &__text
+                font-size: 1.2rem
+                margin-bottom: 1rem
+                color: rgb(55, 55, 55)
+
+                &:last-child
+                    margin-bottom: 0
+
+        &__form
+            display: flex
+            flex-direction: column
+            align-items: center
+            width: 100%
+            background-color: rgb(50, 50, 50)
+            padding: 2rem
+            color: white
+            flex-grow: 1
+
+            &__title
+                margin-bottom: 2rem
+            
+            &__element
+                display: flex
+                align-items: center
+                margin-bottom: 2rem
+                position: relative
+                padding-bottom: 1rem
+                border-bottom: 1px solid white
+
+                &__inputWrapper
+                    display: flex
+                    align-items: center
+
+                &__label
+                    font-size: 1.8rem
+                    margin-right: 2rem
+                    width: 250px
+                    text-align: left
+
+                &__input
+                    font-size: 1.5rem
+                    width: 280px
+                    margin-right: 1rem
+                    text-align: center
+                    outline: none
+                    padding: .5rem .5rem
+
+                &__help
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    font-weight: bold
+                    border-radius: 50%
+                    width: 30px
+                    height: 30px
+                    background-color: rgb(238, 195, 4)
+                    color: white
+
+                    &:hover
+                        cursor: pointer
+                        background-color: white
+                        color: rgb(238, 195, 4)
+
+                    &__content
+                        background-color: white
+                        border: 1px solid black
+                        color: black
+                        padding: 1rem
+                        width: 280px
+                        position: absolute
+                        right: -300px
+            
+            &__submit
+                display: block
+                text-decoration: none
+                font-size: 1.8rem
+                padding: 1rem 2rem
+                text-align: center
+                color: rgb(55, 55, 55)
+                background-color: rgb(238, 195, 4)
+                border: none
+                margin: 0 auto
+                margin-top: 1rem
+
+                &:hover
+                    cursor: pointer
+                    background-color: white
+                    color: rgb(238, 195, 4)

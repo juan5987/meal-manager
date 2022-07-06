@@ -70,9 +70,9 @@ const AccountModif: React.FC<IAccountModif> = ({ user }) => {
       }
       setCode(confirmationCode);
       axios({
-        url: `http://localhost:3001/update/email/${user.id}`,
-        method: 'post',
-        data: confirmationCode,
+        url: `http://localhost:3001/profil/${user.id}/email`,
+        method: 'put',
+        data: { code: confirmationCode },
       })
         .then((response) => {
           setCode(confirmationCode);
@@ -219,7 +219,7 @@ const AccountModif: React.FC<IAccountModif> = ({ user }) => {
         </div>
       )}
       <form className='accountModif__form'>
-        <h2 className='accountModif__form__title'>Modification du profil</h2>
+        <h2 className='accountModif__form__title'>Mon compte</h2>
         <div className='accountModif__form__element'>
           <label
             className='accountModif__form__element__label'
@@ -277,9 +277,9 @@ const AccountModif: React.FC<IAccountModif> = ({ user }) => {
             value={activity}
           >
             <option value='sédentaire'>sédentaire</option>
+            <option value='activité légère'>activité légère</option>
             <option value='activité modérée'>activité modérée</option>
             <option value='activité intense'>activité intense</option>
-            <option value='activité extrême'>activité extrême</option>
           </select>
         </div>
         {errorMsg && (
