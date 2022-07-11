@@ -4,7 +4,6 @@
     justify-content: center
     min-height: calc(100vh - 60px)
     width: 100vw
-    background-color: red
 
 
     &__wrapper
@@ -42,6 +41,11 @@
                 &:last-child
                     margin-bottom: 0
 
+            &__link
+                text-decoration: underline
+                color: rgb(50, 50, 50)
+                font-weight: bold
+
         &__form
             display: flex
             flex-direction: column
@@ -52,6 +56,11 @@
             color: white
             flex-grow: 1
 
+            &__wrapper
+                display: flex
+                justify-content: space-around
+                width: 100%
+
             &__title
                 font-size: 1.8rem
                 margin-bottom: 2rem
@@ -59,25 +68,27 @@
             
             &__element
                 display: flex
+                justify-content: center
                 align-items: center
                 margin-bottom: 2rem
                 position: relative
                 padding-bottom: 1rem
                 border-bottom: 1px solid white
+                width: 100%
 
                 &__inputWrapper
                     display: flex
                     align-items: center
 
                 &__label
-                    font-size: 1.8rem
+                    font-size: 1.5rem
                     margin-right: 2rem
-                    width: 250px
+                    width: 300px
                     text-align: left
 
                 &__input
                     font-size: 1.5rem
-                    width: 280px
+                    width: 400px
                     margin-right: 1rem
                     text-align: center
                     outline: none
@@ -104,9 +115,47 @@
                         border: 1px solid black
                         color: black
                         padding: 1rem
-                        width: 280px
+                        width: 300px
                         position: absolute
-                        right: -300px
+                        right: 220px
+                        bottom: 25px
+
+            &__buttons
+                display: flex
+                justify-content: space-around
+                width: 50%
+
+                &__back, &__submit
+                    display: black
+                    font-size: 1.5rem
+                    padding: 1rem 2rem
+                    margin-top: 1rem
+                    border: none
+
+                &__back
+                    color: rgb(50, 50, 50)
+
+                    &:hover
+                        cursor: pointer
+                        color: rgb(238, 195, 4)
+                    
+                    
+                &__submit
+                    background-color: rgb(238, 195, 4)
+                    color: white
+
+                    &:hover
+                        cursor: pointer
+                        color: rgb(50, 50, 50)
+
+            &__error
+                background-color: red
+                padding: .5rem 2rem
+                font-size: 1.1rem
+                font-weight: bold
+                color: white
+                width: 100%
+                text-align: center
             
             &__submit
                 display: block
