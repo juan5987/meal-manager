@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { EyeOff } from 'react-feather';
 import { Eye } from 'react-feather';
 import * as EmailValidator from 'email-validator';
+
 import { IMCResult } from '../utils/imc';
+import { calculateDailyIntake } from '../utils/dailyIntake';
+import { calculateBMR } from '../utils/dailyIntake';
 
 import '../styles/create-account.sass';
-import { current } from '@reduxjs/toolkit';
 
 const CreateAccount = () => {
   let [currentStep, setCurrentStep] = useState(1);
@@ -39,6 +41,15 @@ const CreateAccount = () => {
   const [isChecked, SetIsChecked] = useState(false);
   const [imc, setImc] = useState(0);
   const [idealWeight, setIdealWeight] = useState(0);
+  const [bmr, setBmr] = useState(0);
+  const [dailies, setDailies] = useState({
+    calorie: 0,
+    carbohydrate: 0,
+    protein: 0,
+    lipid: 0,
+    fiber: 0,
+  });
+  const [isImcModalDisplayed, setIsImcModalDisplayed] = useState(true);
 
   const checkStepOneValues = () => {
     let age = false;
@@ -191,8 +202,25 @@ const CreateAccount = () => {
                 10
             ) / 10
           );
-          // Poids idéal Masculin (en Kg) = Taille (en cm) - 100 - ((Taille (en cm) - 150) /4 ).
-          // Poids idéal Féminin (en Kg) = Taille (en cm) - 100 - ((Taille (en cm) - 150) /2,5 ).
+          setDailies(
+            calculateDailyIntake(
+              formValues.weight,
+              formValues.height,
+              formValues.age,
+              formValues.sex,
+              formValues.activity
+            )
+          );
+
+          setBmr(
+            calculateBMR(
+              formValues.weight,
+              formValues.height,
+              formValues.age,
+              formValues.sex
+            )
+          );
+
           if (formValues.sex === 'Femme') {
             setIdealWeight(
               formValues.height - 100 - (formValues.height - 150) / 2.5
@@ -1114,25 +1142,160 @@ const CreateAccount = () => {
                 En attendant l'arrivée du mail, vous pouvez consulter ci-dessous
                 votre IMC, votre métabolisme de base et vos besoins journaliers.
                 Ces derniers ont été calculés avec les informations que vous
-                avez saisies lors de votre inscription.
-              </p>
-              <p className='createAccount__wrapper__info__text'>
-                ILs vous serviront de repère pour vous aider à équilibrer votre
-                alimentation et atteindre vos objectifs !
+                avez saisies lors de votre inscription. Ils vous serviront de
+                repère pour vous aider à équilibrer votre alimentation et
+                atteindre vos objectifs !
               </p>
               <p className='createAccount__wrapper__info__text'>
                 A très vite sur MealManager !
               </p>
             </div>
-            <div>
-              <h2>Résultat</h2>
-              <div>
-                <div>Votre IMC: </div>
-                <div>{imc}</div>
-                <div>{IMCResult(imc)}</div>
-                <div>Poids idéal:</div>
-                <div>{idealWeight}</div>
+            <div className='createAccount__wrapper__result'>
+              <h2 className='createAccount__wrapper__result__title'>
+                Résultats
+              </h2>
+              <div className='createAccount__wrapper__result__wrapper'>
+                <fieldset className='createAccount__wrapper__result__wrapper__fieldset'>
+                  <legend>IMC</legend>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <div
+                      style={{ margin: '0 auto' }}
+                      className='createAccount__wrapper__result__wrapper__fieldset__element__value'
+                    >
+                      {imc}
+                    </div>
+                  </div>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <div
+                      style={{ margin: '0 auto' }}
+                      className='createAccount__wrapper__result__wrapper__fieldset__element__value'
+                    >
+                      {IMCResult(imc)}
+                    </div>
+                  </div>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <Link
+                      to='/imc/info'
+                      target={'_blank'}
+                      className='createAccount__wrapper__result__wrapper__fieldset__element__button'
+                    >
+                      en savoir plus
+                    </Link>
+                  </div>
+                </fieldset>
+                <fieldset className='createAccount__wrapper__result__wrapper__fieldset'>
+                  <legend>Poids idéal</legend>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <div
+                      style={{ margin: '0 auto' }}
+                      className='createAccount__wrapper__result__wrapper__fieldset__element__value'
+                    >
+                      {idealWeight + ' ' + 'kg*'}
+                    </div>
+                  </div>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__name'>
+                      Différence :
+                    </div>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
+                      {Math.abs(formValues.weight - idealWeight) + ' ' + 'kg'}
+                    </div>
+                  </div>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <Link
+                      to='/idealWeight/info'
+                      target={'_blank'}
+                      className='createAccount__wrapper__result__wrapper__fieldset__element__button'
+                    >
+                      en savoir plus
+                    </Link>
+                  </div>
+                </fieldset>
+                <fieldset className='createAccount__wrapper__result__wrapper__fieldset'>
+                  <legend>Métabolisme de base</legend>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__name'>
+                      Calories
+                    </div>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
+                      {bmr + ' ' + 'kcal'}
+                    </div>
+                  </div>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <button className='createAccount__wrapper__result__wrapper__fieldset__element__button'>
+                      <Link
+                        to='/bmr/info'
+                        target={'_blank'}
+                        className='createAccount__wrapper__result__wrapper__fieldset__element__button'
+                      >
+                        en savoir plus
+                      </Link>
+                    </button>
+                  </div>
+                </fieldset>
+                <fieldset className='createAccount__wrapper__result__wrapper__fieldset'>
+                  <legend>Besoins journaliers</legend>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__name'>
+                      Calories
+                    </div>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
+                      {dailies.calorie + ' ' + 'Kcal'}
+                    </div>
+                  </div>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__name'>
+                      Glucides
+                    </div>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
+                      {dailies.carbohydrate + ' ' + 'g'}
+                    </div>
+                  </div>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__name'>
+                      Protéines
+                    </div>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
+                      {dailies.protein + ' ' + 'g'}
+                    </div>
+                  </div>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__name'>
+                      Lipides
+                    </div>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
+                      {dailies.lipid + ' ' + 'g'}
+                    </div>
+                  </div>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__name'>
+                      Fibres
+                    </div>
+                    <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
+                      {dailies.fiber + ' ' + 'g'}
+                    </div>
+                  </div>
+                  <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
+                    <button className='createAccount__wrapper__result__wrapper__fieldset__element__button'>
+                      <Link
+                        to='/dailies/info'
+                        target={'_blank'}
+                        className='createAccount__wrapper__result__wrapper__fieldset__element__button'
+                      >
+                        en savoir plus
+                      </Link>
+                    </button>
+                  </div>
+                </fieldset>
               </div>
+            </div>
+            <div className='createAccount__wrapper__info'>
+              <p className='createAccount__wrapper__info__text'>
+                <b>
+                  N'oubliez pas de consulter vos mails pour confirmer votre
+                  adresse email et enfin vous connecter à MealManager !
+                </b>
+              </p>
             </div>
           </>
         )}

@@ -8,9 +8,13 @@ import LoginForm from './LoginForm';
 import Home from './Home';
 import Account from './Account';
 import AccountModif from './AccountModif';
+import CreateAccount from './CreateAccount';
+import ImcInfo from './ImcInfo';
+import IdealWeightInfo from './IdealWeightInfo';
+import Bmr from './Bmr';
+import DailiesInfo from './DailiesInfo';
 
 import '../styles/app.sass';
-import CreateAccount from './CreateAccount';
 
 interface IApp extends PropsFromRedux {}
 
@@ -24,6 +28,10 @@ const App: React.FC<IApp> = ({ isLogged }) => {
         <Route path='/register' element={<CreateAccount />} />
         <Route path='/account' element={<Account />} />
         <Route path='/account/modify' element={<AccountModif />} />
+        <Route path='/imc/info' element={<ImcInfo />} />
+        <Route path='/idealWeight/info' element={<IdealWeightInfo />} />
+        <Route path='/bmr/info' element={<Bmr />} />
+        <Route path='/dailies/info' element={<DailiesInfo />} />
       </Routes>
     </div>
   );
