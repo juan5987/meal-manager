@@ -1,36 +1,44 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { EyeOff } from 'react-feather';
+import { Eye } from 'react-feather';
 import * as EmailValidator from 'email-validator';
+import { IMCResult } from '../utils/imc';
 
 import '../styles/create-account.sass';
+import { current } from '@reduxjs/toolkit';
 
 const CreateAccount = () => {
   let [currentStep, setCurrentStep] = useState(1);
   let [displayHelp, setDisplayHelp] = useState('');
   let [formError, setFormError] = useState('');
   let [formValues, setFormValues] = useState({
-    age: 0,
-    height: 0,
-    weight: 0,
-    sex: 'Femme',
+    age: 35,
+    height: 178,
+    weight: 119,
+    sex: 'Homme',
     activity: 'Sédentaire',
-    username: '',
-    email: '',
-    emailConfirm: '',
-    password: '',
-    passwordConfirm: '',
+    username: 'Juan',
+    email: 'juan@email.fr',
+    emailConfirm: 'juan@email.fr',
+    password: 'Juan1234',
+    passwordConfirm: 'Juan1234',
   });
-  let [inputErrorAge, setInputErrorAge] = useState(false);
-  let [inputErrorHeight, setInputErrorHeight] = useState(false);
-  let [inputErrorWeight, setInputErrorWeight] = useState(false);
-  let [inputErrorSex, setInputErrorSex] = useState(false);
-  let [inputErrorActivity, setInputErrorActivity] = useState(false);
-  let [inputErrorUsername, setInputErrorUsername] = useState(false);
-  let [inputErrorEmail, setInputErrorEmail] = useState(false);
-  let [inputErrorEmailConfirm, setInputErrorEmailConfirm] = useState(false);
-  let [inputErrorPassword, setInputErrorPassword] = useState(false);
-  let [inputErrorPasswordConfirm, setInputErrorPasswordConfirm] =
+  const [inputErrorAge, setInputErrorAge] = useState(false);
+  const [inputErrorHeight, setInputErrorHeight] = useState(false);
+  const [inputErrorWeight, setInputErrorWeight] = useState(false);
+  const [inputErrorSex, setInputErrorSex] = useState(false);
+  const [inputErrorActivity, setInputErrorActivity] = useState(false);
+  const [inputErrorUsername, setInputErrorUsername] = useState(false);
+  const [inputErrorEmail, setInputErrorEmail] = useState(false);
+  const [inputErrorEmailConfirm, setInputErrorEmailConfirm] = useState(false);
+  const [inputErrorPassword, setInputErrorPassword] = useState(false);
+  const [inputErrorPasswordConfirm, setInputErrorPasswordConfirm] =
     useState(false);
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [isChecked, SetIsChecked] = useState(false);
+  const [imc, setImc] = useState(0);
+  const [idealWeight, setIdealWeight] = useState(0);
 
   const checkStepOneValues = () => {
     let age = false;
@@ -78,37 +86,13 @@ const CreateAccount = () => {
     let password = false;
     let passwordConfirm = false;
 
-    if (
-      formValues.username.length >= 2 &&
-      formValues.username.length <= 18 &&
-      /^[A-Za-z0-9]*$/.test(formValues.username) &&
-      /^[A-Za-z]*$/.test(formValues.username[0])
-    ) {
-      username = true;
-      setInputErrorUsername(false);
+    if (formValues.password === formValues.passwordConfirm) {
+      passwordConfirm = true;
+      setInputErrorPasswordConfirm(false);
     } else {
-      setFormError('Pseudo incorrect');
-      setInputErrorUsername(true);
-      setDisplayHelp('username');
-    }
-
-    if (EmailValidator.validate(formValues.email)) {
-      email = true;
-      setInputErrorEmail(false);
-    } else {
-      setFormError("format de l'email incorrect");
-      setInputErrorEmail(true);
-      setDisplayHelp('email');
-    }
-
-    if (formValues.email === formValues.emailConfirm) {
-      emailConfirm = true;
-      setInputErrorEmailConfirm(false);
-    } else {
-      setFormError("La confirmation de l'email est erronée");
-      setInputErrorEmailConfirm(true);
-      setInputErrorEmail(true);
-      setDisplayHelp('emailConfirm');
+      setFormError('La confirmation du mot de passe ne correspond pas');
+      setInputErrorPasswordConfirm(true);
+      setDisplayHelp('passwordConfirm');
     }
 
     if (
@@ -125,13 +109,37 @@ const CreateAccount = () => {
       setDisplayHelp('password');
     }
 
-    if (formValues.password === formValues.passwordConfirm) {
-      passwordConfirm = true;
-      setInputErrorPasswordConfirm(false);
+    if (formValues.email === formValues.emailConfirm) {
+      emailConfirm = true;
+      setInputErrorEmailConfirm(false);
     } else {
-      setFormError('La confirmation du mot de passe est erronée');
-      setInputErrorPasswordConfirm(true);
-      setDisplayHelp('passwordConfirm');
+      setFormError("La confirmation de l'email est erronée");
+      setInputErrorEmailConfirm(true);
+      setInputErrorEmail(true);
+      setDisplayHelp('emailConfirm');
+    }
+
+    if (EmailValidator.validate(formValues.email)) {
+      email = true;
+      setInputErrorEmail(false);
+    } else {
+      setFormError("format de l'email incorrect");
+      setInputErrorEmail(true);
+      setDisplayHelp('email');
+    }
+
+    if (
+      formValues.username.length >= 2 &&
+      formValues.username.length <= 18 &&
+      /^[A-Za-z0-9]*$/.test(formValues.username) &&
+      /^[A-Za-z]*$/.test(formValues.username[0])
+    ) {
+      username = true;
+      setInputErrorUsername(false);
+    } else {
+      setFormError('Pseudo incorrect');
+      setInputErrorUsername(true);
+      setDisplayHelp('username');
     }
 
     if (username && email && emailConfirm && password && passwordConfirm) {
@@ -151,6 +159,9 @@ const CreateAccount = () => {
   };
 
   const handleBack = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setFormError('');
+    setDisplayHelp('');
     setCurrentStep(currentStep - 1);
   };
 
@@ -160,7 +171,9 @@ const CreateAccount = () => {
     setFormError('');
     setDisplayHelp('');
 
-    if (currentStep >= 0 && currentStep < 3) {
+    console.log('current step: ' + currentStep);
+
+    if (currentStep >= 0 && currentStep <= 3) {
       if (currentStep === 1) {
         if (checkStepOneValues()) {
           setCurrentStep(currentStep + 1);
@@ -168,6 +181,32 @@ const CreateAccount = () => {
       } else if (currentStep === 2) {
         if (checkStepTwoValues()) {
           setCurrentStep(currentStep + 1);
+        }
+      } else if (currentStep === 3) {
+        if (isChecked) {
+          setImc(
+            Math.round(
+              (formValues.weight /
+                ((formValues.height / 100) * (formValues.height / 100))) *
+                10
+            ) / 10
+          );
+          // Poids idéal Masculin (en Kg) = Taille (en cm) - 100 - ((Taille (en cm) - 150) /4 ).
+          // Poids idéal Féminin (en Kg) = Taille (en cm) - 100 - ((Taille (en cm) - 150) /2,5 ).
+          if (formValues.sex === 'Femme') {
+            setIdealWeight(
+              formValues.height - 100 - (formValues.height - 150) / 2.5
+            );
+          } else if (formValues.sex === 'Homme') {
+            setIdealWeight(
+              formValues.height - 100 - (formValues.height - 150) / 4
+            );
+          }
+          setCurrentStep(currentStep + 1);
+        } else {
+          setFormError(
+            'Vous devez lire et accepter les CGU pour valider votre inscription'
+          );
         }
       }
     }
@@ -668,20 +707,54 @@ const CreateAccount = () => {
                   Votre mot de passe
                 </label>
                 <div className='createAccount__wrapper__form__element__inputWrapper'>
-                  <input
-                    style={{
-                      border: inputErrorPassword
-                        ? '4px solid red '
-                        : '4px solid rgb(50,50,50)',
-                    }}
-                    className='createAccount__wrapper__form__element__input'
-                    type='password'
-                    id='password'
-                    name='password'
-                    value={formValues.password}
-                    onChange={handleChange}
-                    autoComplete='new-password'
-                  />
+                  {passwordVisibility ? (
+                    <>
+                      <input
+                        style={{
+                          border: inputErrorPassword
+                            ? '4px solid red '
+                            : '4px solid rgb(50,50,50)',
+                        }}
+                        className='createAccount__wrapper__form__element__input'
+                        type='text'
+                        id='password'
+                        name='password'
+                        value={formValues.password}
+                        onChange={handleChange}
+                        autoComplete='new-password'
+                      />
+                      <Eye
+                        className={
+                          'createAccount__wrapper__form__element__inputWrapper__icon'
+                        }
+                        onClick={() => setPasswordVisibility(false)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <input
+                        style={{
+                          border: inputErrorPassword
+                            ? '4px solid red '
+                            : '4px solid rgb(50,50,50)',
+                        }}
+                        className='createAccount__wrapper__form__element__input'
+                        type='password'
+                        id='password'
+                        name='password'
+                        value={formValues.password}
+                        onChange={handleChange}
+                        autoComplete='new-password'
+                      />
+                      <EyeOff
+                        className={
+                          'createAccount__wrapper__form__element__inputWrapper__icon'
+                        }
+                        onClick={() => setPasswordVisibility(true)}
+                      />
+                    </>
+                  )}
+
                   <span
                     className='createAccount__wrapper__form__element__help'
                     onMouseOver={() => setDisplayHelp('password')}
@@ -724,20 +797,54 @@ const CreateAccount = () => {
                   Confirmer le mot de passe
                 </label>
                 <div className='createAccount__wrapper__form__element__inputWrapper'>
-                  <input
-                    style={{
-                      border: inputErrorPasswordConfirm
-                        ? '4px solid red '
-                        : '4px solid rgb(50,50,50)',
-                    }}
-                    className='createAccount__wrapper__form__element__input'
-                    type='password'
-                    id='passwordConfirm'
-                    name='passwordConfirm'
-                    value={formValues.passwordConfirm}
-                    onChange={handleChange}
-                    autoComplete='new-password'
-                  />
+                  {passwordVisibility ? (
+                    <>
+                      <input
+                        style={{
+                          border: inputErrorPasswordConfirm
+                            ? '4px solid red '
+                            : '4px solid rgb(50,50,50)',
+                        }}
+                        className='createAccount__wrapper__form__element__input'
+                        type='text'
+                        id='passwordConfirm'
+                        name='passwordConfirm'
+                        value={formValues.passwordConfirm}
+                        onChange={handleChange}
+                        autoComplete='new-password'
+                      />
+                      <Eye
+                        className={
+                          'createAccount__wrapper__form__element__inputWrapper__icon'
+                        }
+                        onClick={() => setPasswordVisibility(false)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <input
+                        style={{
+                          border: inputErrorPasswordConfirm
+                            ? '4px solid red '
+                            : '4px solid rgb(50,50,50)',
+                        }}
+                        className='createAccount__wrapper__form__element__input'
+                        type='password'
+                        id='passwordConfirm'
+                        name='passwordConfirm'
+                        value={formValues.passwordConfirm}
+                        onChange={handleChange}
+                        autoComplete='new-password'
+                      />
+                      <EyeOff
+                        className={
+                          'createAccount__wrapper__form__element__inputWrapper__icon'
+                        }
+                        onClick={() => setPasswordVisibility(true)}
+                      />
+                    </>
+                  )}
+
                   <span
                     className='createAccount__wrapper__form__element__help'
                     onMouseOver={() => setDisplayHelp('passwordConfirm')}
@@ -939,14 +1046,27 @@ const CreateAccount = () => {
                   />
                 </div>
               </div>
-              <div>
-                <input type='checkbox' style={{ marginRight: '.5rem' }} />
-                <label htmlFor=''>
-                  J'ai lu et j'accepte les{' '}
+              {formError && (
+                <p className='createAccount__wrapper__form__error'>
+                  {formError}
+                </p>
+              )}
+              <div style={{ display: 'flex' }}>
+                <input
+                  onChange={() => SetIsChecked(!isChecked)}
+                  type='checkbox'
+                  name='checkbox'
+                  style={{ marginRight: '.5rem' }}
+                />
+                <label
+                  htmlFor='checkbox'
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  J'ai lu et j'accepte les
                   <Link
                     to='/cgu'
                     className='createAccount__wrapper__info__link'
-                    style={{ color: 'white' }}
+                    style={{ color: 'white', marginLeft: '.4em' }}
                     target='_blank'
                     rel='noopener noreferrer'
                   >
@@ -960,16 +1080,60 @@ const CreateAccount = () => {
                   type='button'
                   onClick={handleBack}
                 >
-                  Retour à la création du compte utilisateur
+                  Corriger mes saisies
                 </button>
                 <button
                   className='createAccount__wrapper__form__buttons__submit'
                   type='submit'
                 >
-                  Je termine mon inscription
+                  Je valide mon inscription
                 </button>
               </div>
             </form>
+          </>
+        )}
+        {/* FORM STEP THREE */}
+        {currentStep === 4 && (
+          <>
+            <div className='createAccount__wrapper__info'>
+              <h2 className='createAccount__wrapper__info__title'>
+                Votre inscription a bien été prise en compte et vos données ont
+                été enregistrées.
+              </h2>
+              <p className='createAccount__wrapper__info__text'>
+                Vous allez recevoir un mail dans quelques instants afin de
+                valider votre adresse email.
+              </p>
+              <p className='createAccount__wrapper__info__text'>
+                <strong>
+                  Après avoir validé votre email vous pourrez vous connecter à
+                  MealManager.
+                </strong>
+              </p>
+              <p className='createAccount__wrapper__info__text'>
+                En attendant l'arrivée du mail, vous pouvez consulter ci-dessous
+                votre IMC, votre métabolisme de base et vos besoins journaliers.
+                Ces derniers ont été calculés avec les informations que vous
+                avez saisies lors de votre inscription.
+              </p>
+              <p className='createAccount__wrapper__info__text'>
+                ILs vous serviront de repère pour vous aider à équilibrer votre
+                alimentation et atteindre vos objectifs !
+              </p>
+              <p className='createAccount__wrapper__info__text'>
+                A très vite sur MealManager !
+              </p>
+            </div>
+            <div>
+              <h2>Résultat</h2>
+              <div>
+                <div>Votre IMC: </div>
+                <div>{imc}</div>
+                <div>{IMCResult(imc)}</div>
+                <div>Poids idéal:</div>
+                <div>{idealWeight}</div>
+              </div>
+            </div>
           </>
         )}
       </div>

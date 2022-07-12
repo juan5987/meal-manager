@@ -79,6 +79,16 @@
                 &__inputWrapper
                     display: flex
                     align-items: center
+                    position: relative
+
+                    &__icon
+                        position: absolute
+                        right: 60px
+                        color: rgb(40, 39, 42)
+
+                        &:hover
+                            cursor: pointer
+                            color: rgb(238, 195, 4)
 
                 &__label
                     font-size: 1.5rem
@@ -117,8 +127,8 @@
                         padding: 1rem
                         width: 300px
                         position: absolute
-                        right: 220px
-                        bottom: 25px
+                        left: 500px
+
 
             &__buttons
                 display: flex
@@ -156,6 +166,7 @@
                 color: white
                 width: 100%
                 text-align: center
+                margin-bottom: 1rem
             
             &__submit
                 display: block
@@ -173,3 +184,4 @@
                     cursor: pointer
                     background-color: white
                     color: rgb(238, 195, 4)
+
