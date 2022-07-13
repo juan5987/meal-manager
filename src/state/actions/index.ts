@@ -1,6 +1,6 @@
 import { ActionType } from '../action-types';
 import { IIngredient, IMeal } from '../meal';
-import { IWeight, IUser, IDailyIntake } from '../user';
+import { IWeight, IUser, IDailyIntake, IregisterInfo } from '../user';
 
 export interface setLoadingOnAction {
   type: ActionType.SET_LOADING_ON;
@@ -124,6 +124,21 @@ export interface updateActivitySuccessAction {
   };
 }
 
+export interface registerAction {
+  type: ActionType.REGISTER;
+  payload: IregisterInfo;
+}
+
+export interface registerSuccessAction {
+  type: ActionType.REGISTER_SUCCESS;
+  payload: string;
+}
+
+export interface registerFailedAction {
+  type: ActionType.REGISTER_FAILED;
+  payload: string;
+}
+
 export type Action =
   | setLoadingOnAction
   | setLoadingOffAction
@@ -146,4 +161,7 @@ export type Action =
   | updateDailyAction
   | updateAgeSuccessAction
   | updateUsernameSuccessAction
-  | updateActivitySuccessAction;
+  | updateActivitySuccessAction
+  | registerAction
+  | registerSuccessAction
+  | registerFailedAction;

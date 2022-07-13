@@ -1,6 +1,6 @@
 import { ActionType } from '../action-types';
 import { IMeal, IIngredient } from '../meal';
-import { IUser, IWeight, IDailyIntake } from '../user';
+import { IUser, IWeight, IDailyIntake, IregisterInfo } from '../user';
 import {
   getMealsAction,
   getMealsSuccessAction,
@@ -163,6 +163,44 @@ export const updateActivitySuccess = (
     type: ActionType.UPDATE_ACTIVITY_SUCCESS,
     payload: {
       activity,
+    },
+  };
+};
+
+export const register = (user: IregisterInfo) => {
+  return {
+    type: ActionType.REGISTER,
+    payload: user,
+  };
+};
+
+export const register_success = (successMsg: string) => {
+  return {
+    type: ActionType.REGISTER_SUCCESS,
+    payload: successMsg,
+  };
+};
+
+export const register_failed = (errorMsg: string) => {
+  return {
+    type: ActionType.REGISTER_FAILED,
+    payload: errorMsg,
+  };
+};
+
+export const addWeight = (weight: IWeight) => {
+  return {
+    type: ActionType.ADD_WEIGHT,
+    payload: weight,
+  };
+};
+
+export const addDaily = (userId: number, daily: IDailyIntake) => {
+  return {
+    type: ActionType.ADD_DAILY,
+    payload: {
+      userId,
+      daily,
     },
   };
 };

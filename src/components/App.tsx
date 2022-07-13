@@ -13,6 +13,7 @@ import ImcInfo from './ImcInfo';
 import IdealWeightInfo from './IdealWeightInfo';
 import Bmr from './Bmr';
 import DailiesInfo from './DailiesInfo';
+import RegisterConfirmation from './RegisterConfirm';
 
 import '../styles/app.sass';
 
@@ -32,6 +33,7 @@ const App: React.FC<IApp> = ({ isLogged }) => {
         <Route path='/idealWeight/info' element={<IdealWeightInfo />} />
         <Route path='/bmr/info' element={<Bmr />} />
         <Route path='/dailies/info' element={<DailiesInfo />} />
+        <Route path='/confirmation/:code' element={<RegisterConfirmation />} />
       </Routes>
     </div>
   );

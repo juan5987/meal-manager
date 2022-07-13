@@ -9,6 +9,10 @@ export interface UserState {
   dailyIntake: IDailyIntake | {};
   weight: IWeight[] | [];
   loggingErrorMsg: string;
+  register: {
+    errorMsg: string;
+    successMsg: string;
+  };
 }
 
 const initialState: UserState = {
@@ -27,6 +31,10 @@ const initialState: UserState = {
   dailyIntake: {},
   weight: [],
   loggingErrorMsg: '',
+  register: {
+    errorMsg: '',
+    successMsg: '',
+  },
 };
 
 const reducer = (
@@ -103,6 +111,25 @@ const reducer = (
         user: {
           ...state.user,
           age: action.payload.age,
+        },
+      };
+
+    case ActionType.REGISTER_SUCCESS:
+      return {
+        ...state,
+        register: {
+          ...state.register,
+          errorMsg: '',
+          successMsg: action.payload,
+        },
+      };
+    case ActionType.REGISTER_FAILED:
+      return {
+        ...state,
+        register: {
+          ...state.register,
+          errorMsg: action.payload,
+          successMsg: '',
         },
       };
 

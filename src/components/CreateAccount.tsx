@@ -1,36 +1,41 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { EyeOff } from 'react-feather';
 import { Eye } from 'react-feather';
 import * as EmailValidator from 'email-validator';
+import moment from 'moment';
 
+import { register } from '../state/action-creators';
 import { IMCResult } from '../utils/imc';
 import { calculateDailyIntake } from '../utils/dailyIntake';
 import { calculateBMR } from '../utils/dailyIntake';
+import { IregisterInfo } from '../state/user';
 
 import '../styles/create-account.sass';
 
 const CreateAccount = () => {
+  const dispatch = useDispatch();
   let [currentStep, setCurrentStep] = useState(1);
   let [displayHelp, setDisplayHelp] = useState('');
   let [formError, setFormError] = useState('');
-  let [formValues, setFormValues] = useState({
+  let [formValues, setFormValues] = useState<IregisterInfo>({
     age: 35,
     height: 178,
     weight: 119,
+    goal: 80,
     sex: 'Homme',
-    activity: 'Sédentaire',
+    activity: 'sédentaire',
     username: 'Juan',
-    email: 'juan@email.fr',
-    emailConfirm: 'juan@email.fr',
+    email: 'jeanluc.machado@gmail.com',
+    emailConfirm: 'jeanluc.machado@gmail.com',
     password: 'Juan1234',
     passwordConfirm: 'Juan1234',
+    date: moment().format('yyyy-MM-DD'),
   });
   const [inputErrorAge, setInputErrorAge] = useState(false);
   const [inputErrorHeight, setInputErrorHeight] = useState(false);
   const [inputErrorWeight, setInputErrorWeight] = useState(false);
-  const [inputErrorSex, setInputErrorSex] = useState(false);
-  const [inputErrorActivity, setInputErrorActivity] = useState(false);
   const [inputErrorUsername, setInputErrorUsername] = useState(false);
   const [inputErrorEmail, setInputErrorEmail] = useState(false);
   const [inputErrorEmailConfirm, setInputErrorEmailConfirm] = useState(false);
@@ -49,7 +54,6 @@ const CreateAccount = () => {
     lipid: 0,
     fiber: 0,
   });
-  const [isImcModalDisplayed, setIsImcModalDisplayed] = useState(true);
 
   const checkStepOneValues = () => {
     let age = false;
@@ -231,6 +235,22 @@ const CreateAccount = () => {
             );
           }
           setCurrentStep(currentStep + 1);
+          dispatch(
+            register({
+              username: formValues.username,
+              email: formValues.email,
+              emailConfirm: formValues.emailConfirm,
+              password: formValues.password,
+              passwordConfirm: formValues.passwordConfirm,
+              height: formValues.height,
+              age: formValues.age,
+              sex: formValues.sex,
+              activity: formValues.activity,
+              weight: formValues.weight,
+              goal: formValues.goal,
+              date: moment().format('YYYY-MM-DD'),
+            })
+          );
         } else {
           setFormError(
             'Vous devez lire et accepter les CGU pour valider votre inscription'
@@ -255,13 +275,8 @@ const CreateAccount = () => {
               </h2>
               <p className='createAccount__wrapper__info__text'>
                 Afin de créer votre profil et de calculer vos besoins
-                journaliers et votre indice de masse corporelle, nous avons
-                besoin de quelques informations.
-              </p>
-              <p className='createAccount__wrapper__info__text'>
-                Ces informations sont indispensables pour pouvoir initialiser
-                votre profil et vous permettre de suivre l'évolution de votre
-                poids et de vos besoins journaliers.
+                journaliers, votre poids idéal et votre indice de masse
+                corporelle, nous avons besoin de quelques informations.
               </p>
               <p className='createAccount__wrapper__info__text'>
                 <strong>
@@ -412,17 +427,60 @@ const CreateAccount = () => {
               <div className='createAccount__wrapper__form__element'>
                 <label
                   className='createAccount__wrapper__form__element__label'
+                  htmlFor='weight'
+                >
+                  Votre objectif de poids
+                </label>
+                <div className='createAccount__wrapper__form__element__inputWrapper'>
+                  <input
+                    style={{
+                      border: inputErrorWeight
+                        ? '4px solid red '
+                        : '4px solid rgb(50,50,50)',
+                    }}
+                    className='createAccount__wrapper__form__element__input'
+                    type='number'
+                    id='goal'
+                    name='goal'
+                    value={formValues.goal}
+                    onChange={handleChange}
+                  />
+                  <span
+                    className='createAccount__wrapper__form__element__help'
+                    onMouseOver={() => setDisplayHelp('goal')}
+                    onMouseOut={() => setDisplayHelp('')}
+                  >
+                    ?
+                  </span>
+                  <div
+                    style={{
+                      display: displayHelp === 'goal' ? 'block' : 'none',
+                    }}
+                    className='createAccount__wrapper__form__element__help__content'
+                  >
+                    <p className='createAccount__wrapper__info__text'>
+                      Votre objectif actuel <strong>en kilos</strong> avec des
+                      caractères numériques. Utilisez un point si la valeur est
+                      décimale.
+                    </p>
+                    <p className='createAccount__wrapper__info__text'>
+                      Vous pourrez modifier votre objectif plus tard.
+                    </p>
+                    <p className='createAccount__wrapper__info__text'>
+                      <strong>exemples: 80 ou 80.7</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className='createAccount__wrapper__form__element'>
+                <label
+                  className='createAccount__wrapper__form__element__label'
                   htmlFor='sex'
                 >
                   Votre sexe
                 </label>
                 <div className='createAccount__wrapper__form__element__inputWrapper'>
                   <select
-                    style={{
-                      border: inputErrorSex
-                        ? '4px solid red '
-                        : '4px solid rgb(50,50,50)',
-                    }}
                     className='createAccount__wrapper__form__element__input'
                     id='sex'
                     name='sex'
@@ -473,11 +531,6 @@ const CreateAccount = () => {
                 </label>
                 <div className='createAccount__wrapper__form__element__inputWrapper'>
                   <select
-                    style={{
-                      border: inputErrorActivity
-                        ? '4px solid red '
-                        : '4px solid rgb(50,50,50)',
-                    }}
                     className='createAccount__wrapper__form__element__input'
                     id='activity'
                     name='activity'
@@ -1013,6 +1066,22 @@ const CreateAccount = () => {
               <div className='createAccount__wrapper__form__element'>
                 <label
                   className='createAccount__wrapper__form__element__label'
+                  htmlFor='weight'
+                >
+                  Votre objectif
+                </label>
+                <div className='createAccount__wrapper__form__element__inputWrapper'>
+                  <input
+                    className='createAccount__wrapper__form__element__input'
+                    type='number'
+                    value={formValues.goal}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className='createAccount__wrapper__form__element'>
+                <label
+                  className='createAccount__wrapper__form__element__label'
                   htmlFor='sex'
                 >
                   Votre sexe
@@ -1190,7 +1259,7 @@ const CreateAccount = () => {
                       style={{ margin: '0 auto' }}
                       className='createAccount__wrapper__result__wrapper__fieldset__element__value'
                     >
-                      {idealWeight + ' ' + 'kg*'}
+                      {idealWeight + ' kg*'}
                     </div>
                   </div>
                   <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
@@ -1198,7 +1267,7 @@ const CreateAccount = () => {
                       Différence :
                     </div>
                     <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
-                      {Math.abs(formValues.weight - idealWeight) + ' ' + 'kg'}
+                      {Math.abs(formValues.weight - idealWeight) + ' kg'}
                     </div>
                   </div>
                   <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
@@ -1218,7 +1287,7 @@ const CreateAccount = () => {
                       Calories
                     </div>
                     <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
-                      {bmr + ' ' + 'kcal'}
+                      {bmr + ' kcal'}
                     </div>
                   </div>
                   <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
@@ -1240,7 +1309,7 @@ const CreateAccount = () => {
                       Calories
                     </div>
                     <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
-                      {dailies.calorie + ' ' + 'Kcal'}
+                      {dailies.calorie + ' Kcal'}
                     </div>
                   </div>
                   <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
@@ -1248,7 +1317,7 @@ const CreateAccount = () => {
                       Glucides
                     </div>
                     <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
-                      {dailies.carbohydrate + ' ' + 'g'}
+                      {dailies.carbohydrate + ' g'}
                     </div>
                   </div>
                   <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
@@ -1256,7 +1325,7 @@ const CreateAccount = () => {
                       Protéines
                     </div>
                     <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
-                      {dailies.protein + ' ' + 'g'}
+                      {dailies.protein + ' g'}
                     </div>
                   </div>
                   <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
@@ -1264,7 +1333,7 @@ const CreateAccount = () => {
                       Lipides
                     </div>
                     <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
-                      {dailies.lipid + ' ' + 'g'}
+                      {dailies.lipid + ' g'}
                     </div>
                   </div>
                   <div className='createAccount__wrapper__result__wrapper__fieldset__element'>
@@ -1272,7 +1341,7 @@ const CreateAccount = () => {
                       Fibres
                     </div>
                     <div className='createAccount__wrapper__result__wrapper__fieldset__element__value'>
-                      {dailies.fiber + ' ' + 'g'}
+                      {dailies.fiber + ' g'}
                     </div>
                   </div>
                   <div className='createAccount__wrapper__result__wrapper__fieldset__element'>

@@ -18,7 +18,12 @@ import {
   updateActivitySuccess,
   updateUsernameSuccess,
   updateAgeSuccess,
+  register_success,
+  register_failed,
+  addWeight,
+  addDaily,
 } from '../state/action-creators';
+import { calculateDailyIntake } from '../utils/dailyIntake';
 import { sortByDate } from '../utils/sort';
 
 const mainMiddleware: Middleware = (store) => (next) => (action) => {
@@ -156,6 +161,51 @@ const mainMiddleware: Middleware = (store) => (next) => (action) => {
           store.dispatch(updateAgeSuccess(action.payload.age));
         })
         .catch((error) => console.log(error));
+      break;
+    }
+    case ActionType.REGISTER: {
+      store.dispatch(setLoadingOn());
+      axios({
+        method: 'post',
+        url: `http://localhost:3001/register`,
+        data: {
+          username: action.payload.username,
+          email: action.payload.email,
+          emailConfirm: action.payload.emailConfirm,
+          password: action.payload.password,
+          passwordConfirm: action.payload.passwordConfirm,
+          height: action.payload.height,
+          age: action.payload.age,
+          sex: action.payload.sex,
+          activity: action.payload.activity,
+        },
+      })
+        .then((response) => {
+          store.dispatch(
+            addWeight({
+              weight: action.payload.weight,
+              goal: action.payload.goal,
+              date: action.payload.date,
+              user_id: response.data.id,
+            })
+          );
+          store.dispatch(
+            addDaily(
+              response.data.id,
+              calculateDailyIntake(
+                action.payload.weight,
+                action.payload.height,
+                action.payload.age,
+                action.payload.sex,
+                action.payload.activity
+              )
+            )
+          );
+          store.dispatch(register_success(response.data.message));
+        })
+        .catch((error) =>
+          store.dispatch(register_failed(error.response.data.message))
+        );
       break;
     }
 
