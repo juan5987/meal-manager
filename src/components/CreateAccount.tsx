@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { EyeOff } from 'react-feather';
 import { Eye } from 'react-feather';
 import * as EmailValidator from 'email-validator';
 import moment from 'moment';
+import axios from 'axios';
 
 import { register } from '../state/action-creators';
 import { IMCResult } from '../utils/imc';
 import { calculateDailyIntake } from '../utils/dailyIntake';
 import { calculateBMR } from '../utils/dailyIntake';
 import { IregisterInfo } from '../state/user';
+import { RootState } from '../state';
 
 import '../styles/create-account.sass';
 
-const CreateAccount = () => {
+interface ICreateAccount extends PropsFromRedux {}
+
+const CreateAccount: React.FC<ICreateAccount> = ({ errorMsg, loading }) => {
   const dispatch = useDispatch();
   let [currentStep, setCurrentStep] = useState(1);
   let [displayHelp, setDisplayHelp] = useState('');
@@ -43,6 +47,8 @@ const CreateAccount = () => {
   const [inputErrorPasswordConfirm, setInputErrorPasswordConfirm] =
     useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [usernameAlreadyExist, setUsernameAlreadyExist] = useState(false);
+  const [emailAlreadyExist, setEmailAlreadyExist] = useState(false);
   const [isChecked, SetIsChecked] = useState(false);
   const [imc, setImc] = useState(0);
   const [idealWeight, setIdealWeight] = useState(0);
@@ -186,8 +192,6 @@ const CreateAccount = () => {
     setFormError('');
     setDisplayHelp('');
 
-    console.log('current step: ' + currentStep);
-
     if (currentStep >= 0 && currentStep <= 3) {
       if (currentStep === 1) {
         if (checkStepOneValues()) {
@@ -195,7 +199,34 @@ const CreateAccount = () => {
         }
       } else if (currentStep === 2) {
         if (checkStepTwoValues()) {
-          setCurrentStep(currentStep + 1);
+          setUsernameAlreadyExist(false);
+          setEmailAlreadyExist(false);
+          axios({
+            method: 'post',
+            url: `http://localhost:3001/pre-register`,
+            data: {
+              email: formValues.email,
+              username: formValues.username,
+            },
+          })
+            .then((response) => {
+              console.log(response);
+              setCurrentStep(currentStep + 1);
+            })
+            .catch((error) => {
+              console.log(error.response.data.message);
+              if (error.response.data.message === 'both') {
+                setUsernameAlreadyExist(true);
+                setEmailAlreadyExist(true);
+                setFormError('Ce pseudo et cette email sont déjà enregistrés');
+              } else if (error.response.data.message === 'email') {
+                setEmailAlreadyExist(true);
+                setFormError('Cette adresse email est déjà enregistrée');
+              } else if (error.response.data.message === 'username') {
+                setUsernameAlreadyExist(true);
+                setFormError('Ce pseudo est déjà utilisé');
+              }
+            });
         }
       } else if (currentStep === 3) {
         if (isChecked) {
@@ -661,9 +692,10 @@ const CreateAccount = () => {
                 <div className='createAccount__wrapper__form__element__inputWrapper'>
                   <input
                     style={{
-                      border: inputErrorUsername
-                        ? '4px solid red '
-                        : '4px solid rgb(50,50,50)',
+                      border:
+                        inputErrorUsername || usernameAlreadyExist
+                          ? '4px solid red '
+                          : '4px solid rgb(50,50,50)',
                     }}
                     className='createAccount__wrapper__form__element__input'
                     type='text'
@@ -706,9 +738,10 @@ const CreateAccount = () => {
                 <div className='createAccount__wrapper__form__element__inputWrapper'>
                   <input
                     style={{
-                      border: inputErrorEmail
-                        ? '4px solid red '
-                        : '4px solid rgb(50,50,50)',
+                      border:
+                        inputErrorEmail || emailAlreadyExist
+                          ? '4px solid red '
+                          : '4px solid rgb(50,50,50)',
                     }}
                     className='createAccount__wrapper__form__element__input'
                     type='email'
@@ -1179,12 +1212,14 @@ const CreateAccount = () => {
                 >
                   Corriger mes saisies
                 </button>
-                <button
-                  className='createAccount__wrapper__form__buttons__submit'
-                  type='submit'
-                >
-                  Je valide mon inscription
-                </button>
+                {!errorMsg && (
+                  <button
+                    className='createAccount__wrapper__form__buttons__submit'
+                    type='submit'
+                  >
+                    Je valide mon inscription
+                  </button>
+                )}
               </div>
             </form>
           </>
@@ -1373,4 +1408,14 @@ const CreateAccount = () => {
   );
 };
 
-export default CreateAccount;
+const mapStateToProps = (state: RootState) => {
+  return {
+    errorMsg: state.user.register.errorMsg,
+    loading: state.user.loading,
+  };
+};
+
+const connector = connect(mapStateToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(CreateAccount);
