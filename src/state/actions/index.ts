@@ -14,7 +14,7 @@ export interface loggingInAction {
   type: ActionType.LOG_IN;
 }
 
-export interface logOutInAction {
+export interface loggingOutAction {
   type: ActionType.LOG_OUT;
 }
 
@@ -143,7 +143,7 @@ export type Action =
   | setLoadingOnAction
   | setLoadingOffAction
   | loggingInAction
-  | logOutInAction
+  | loggingOutAction
   | getMealsAction
   | getMealsSuccessAction
   | getMealsFailedAction

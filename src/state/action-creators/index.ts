@@ -19,6 +19,12 @@ export const loggingIn = (email: string, password: string) => {
   };
 };
 
+export const loggingOut = () => {
+  return {
+    type: ActionType.LOG_OUT,
+  };
+};
+
 export const loggingSuccess = (user: IUser) => {
   return {
     type: ActionType.LOG_IN_SUCCESS,

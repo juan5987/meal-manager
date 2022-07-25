@@ -14,6 +14,8 @@ import IdealWeightInfo from './IdealWeightInfo';
 import Bmr from './Bmr';
 import DailiesInfo from './DailiesInfo';
 import RegisterConfirmation from './RegisterConfirm';
+import PasswordModif from './PasswordModif';
+import AccountDelete from './AccountDelete';
 
 import '../styles/app.sass';
 
@@ -34,6 +36,8 @@ const App: React.FC<IApp> = ({ isLogged }) => {
         <Route path='/bmr/info' element={<Bmr />} />
         <Route path='/dailies/info' element={<DailiesInfo />} />
         <Route path='/confirmation/:code' element={<RegisterConfirmation />} />
+        <Route path='/profil/modify/password' element={<PasswordModif />} />
+        <Route path='/profil/delete' element={<AccountDelete />} />
       </Routes>
     </div>
   );
