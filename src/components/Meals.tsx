@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Meal from './Meal';
+
 import '../styles/meals.sass';
 
 const Meals = () => {
@@ -117,7 +119,18 @@ const Meals = () => {
           </button>
         </div>
       </div>
-      <div className='meals__meals'></div>
+      <div className='meals__meals'>
+        <div className='meals__meals__wrapper'>
+          <Meal name='Poulets aux poivrons' />
+          <Meal name='Poulets curry' />
+          <Meal name='Couscous au poulet' />
+          <Meal name='Salade de thon' />
+          <Meal name='Steak, riz, haricots verts' />
+          <Meal name='Pâtes bolognaises' />
+          <Meal name='Chili con carne' />
+          <Meal name='Oeufs sur le plat' />
+        </div>
+      </div>
     </div>
   );
 };

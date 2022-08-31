@@ -1,0 +1,37 @@
+.meal
+    display: flex
+    flex-direction: column
+    color: white
+    background-color: rgb(40, 39, 42)
+    margin-top: 1rem
+    padding: 1rem 2rem
+    border: 2px solid white
+    margin-right: 2rem
+    height: min-content
+
+    &:hover
+        cursor: pointer
+        background-color: rgb(119, 119, 119)
+
+    &__name
+        text-align: center
+        font-size: 1.5rem
+        font-weight: bold
+        border-bottom: 1px solid white
+        padding-bottom: .5rem
+    
+    &__info
+        display: flex
+        justify-content: center
+        text-align: center
+        font-size: 1.2rem
+
+        &__element
+            width: 120px
+            padding-top: .8rem
+
+            &__name, &__value
+                padding: .25rem 1rem
+
+            &__name
+                color: rgb(238, 195, 4)
