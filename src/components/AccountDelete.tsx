@@ -122,6 +122,9 @@ const ProfilDelete: React.FC<ICreateAccount> = ({ userId, email }) => {
         <button type='submit' className='accountDelete__form__submit'>
           Supprimer mon compte
         </button>
+        <button type='button' className='accountDelete__form__cancel'>
+          annuler
+        </button>
       </form>
     </div>
   );

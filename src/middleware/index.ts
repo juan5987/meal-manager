@@ -55,7 +55,11 @@ const mainMiddleware: Middleware = (store) => (next) => (action) => {
           store.dispatch(getDaily(user.id));
         })
         .catch((error) => {
-          store.dispatch(loggingFailed(error.response.data.message));
+          if (error.response.data) {
+            store.dispatch(loggingFailed(error.response.data.message));
+          } else {
+            store.dispatch(loggingFailed('Le serveur ne répond pas'));
+          }
         });
 
       break;

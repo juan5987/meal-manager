@@ -7,7 +7,6 @@ import Header from './Header';
 import LoginForm from './LoginForm';
 import Home from './Home';
 import Account from './Account';
-import AccountModif from './AccountModif';
 import CreateAccount from './CreateAccount';
 import ImcInfo from './ImcInfo';
 import IdealWeightInfo from './IdealWeightInfo';
@@ -30,7 +29,6 @@ const App: React.FC<IApp> = ({ isLogged }) => {
         <Route path='/login' element={<LoginForm />} />
         <Route path='/register' element={<CreateAccount />} />
         <Route path='/account' element={<Account />} />
-        <Route path='/account/modify' element={<AccountModif />} />
         <Route path='/imc/info' element={<ImcInfo />} />
         <Route path='/idealWeight/info' element={<IdealWeightInfo />} />
         <Route path='/bmr/info' element={<Bmr />} />
