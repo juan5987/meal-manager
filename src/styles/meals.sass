@@ -1,3 +1,5 @@
+@import 'vars'
+
 .meals
     display: flex
     flex-direction: column
@@ -10,7 +12,7 @@
     &__title
         font-size: 2.2rem
         font-weight: bold
-        background-color: rgb(238, 195, 4)
+        background-color: $base-color
         color: white
         width: 100%
         text-align: center
@@ -26,7 +28,6 @@
         &__filters
             display: flex
             justify-content: center
-            background-color: rgb(40, 39, 42)
             color: white
             padding-bottom: 1rem
 
@@ -58,7 +59,7 @@
                 &__button
                     font-size: 1.2rem
                     padding: .5rem 2rem
-                    background-color: rgb(238, 195, 4)
+                    background-color: $base-color
                     color: white
                     border: none
                     margin-top: 1.4rem
@@ -67,14 +68,13 @@
                     &:hover
                         cursor: pointer
                         background-color: white
-                        color: rgb(238, 195, 4)
+                        color: $base-color
         &__add
             display: flex
             justify-content: center
-            background-color: rgb(40, 39, 42)
 
             &__button
-                background-color: rgb(238, 195, 4)
+                background-color: $base-color
                 color: white
                 font-size: 1.2rem
                 padding: .5rem 1rem
@@ -84,11 +84,12 @@
                 &:hover
                     cursor: pointer
                     background-color: white
-                    color: rgb(238, 195, 4)
+                    color: $base-color
 
     &__meals
         display: flex
         justify-content: center
+        align-items: center
         flex-grow: 2
         background-color: rgba(0,0,0, .6)
         padding-bottom: 1rem
@@ -132,4 +133,4 @@
 
     .meals__wrapper__add__button
         background-color: #fff
-        color: rgb(238, 195, 4)
+        color: $base-color
