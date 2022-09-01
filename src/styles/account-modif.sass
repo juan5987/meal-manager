@@ -1,3 +1,5 @@
+@import 'vars'
+
 .accountModif
     height: 100vh
     display: flex
@@ -9,7 +11,7 @@
     background-size: cover
 
     &__form
-        background-color: rgb(40, 39, 42)
+        background-color: $dark
         padding: 2em
         border-radius: 15px
 
@@ -19,7 +21,7 @@
             padding: .5em 1em
             text-align: center
             background-color: rgb(238, 195, 4)
-            color: rgb(40, 39, 42)
+            color: $dark
             border-radius: 15px
         
         &__element
@@ -68,7 +70,7 @@
             &__link
                 display: block
                 background-color: white
-                color: rgb(40, 39, 42)
+                color: $dark
                 border: none
                 font-size: 1.3em
                 font-weight: bold
@@ -103,11 +105,11 @@
             padding: 2rem 4rem
             margin-bottom: 1em
             background-color: rgb(245, 240, 254)
-            border: 5px solid rgb(40, 39, 42)
+            border: 5px solid $dark
             border-radius: 10px
 
             &__title
-                background-color: rgb(40, 39, 42)
+                background-color: $dark
                 color: white
                 text-align: center
                 padding: .5rem 1rem
@@ -117,7 +119,7 @@
             &__advice
                 text-align: justify
                 margin-bottom: 1rem
-                color: rgb(40, 39, 42)
+                color: $dark
                 font-weight: bold
 
             &__label
@@ -134,7 +136,7 @@
                 margin-bottom: 1rem
 
             &__button
-                color: rgb(40, 39, 42)
+                color: $dark
                 border: none
                 padding: 0.5em 1.5em
                 font-size: 1.3em
@@ -147,6 +149,6 @@
 
                 &:hover
                     cursor: pointer
-                    background-color: rgb(40, 39, 42)
+                    background-color: $dark
                     color: white
 

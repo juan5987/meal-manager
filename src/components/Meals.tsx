@@ -6,6 +6,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { IMeal } from '../state/meal';
 
 import Meal from './Meal';
+import CreateMealModal from './CreateMealModal';
 import { sortByProperty } from '../utils/sort';
 
 import '../styles/meals.sass';
@@ -16,6 +17,8 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
   const [filteredMeals, setfilteredMeals] = useState<IMeal[]>([...meals]);
   const sortValue: any = useRef();
   const orderValue: any = useRef();
+  const [showCreateMealModal, setShowCreateMealModal] =
+    useState<boolean>(false);
 
   useEffect(() => {
     setfilteredMeals([...meals]);
@@ -146,7 +149,10 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
             </div>
           </div>
           <div className='meals__wrapper__add'>
-            <button className='meals__wrapper__add__button'>
+            <button
+              className='meals__wrapper__add__button'
+              onClick={() => setShowCreateMealModal(true)}
+            >
               + Ajouter un repas
             </button>
           </div>
@@ -182,6 +188,9 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
             })}
         </div>
       </div>
+      {showCreateMealModal && (
+        <CreateMealModal showModal={setShowCreateMealModal} />
+      )}
     </div>
   );
 };

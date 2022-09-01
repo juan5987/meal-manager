@@ -1,3 +1,5 @@
+@import 'vars'
+    
 .accountDelete
     width: 100%
     height: 100vh
@@ -11,7 +13,7 @@
 
     &__form
         width: 500px
-        background-color: rgb(40, 39, 42)
+        background-color: $dark
         padding: 2rem
         border-radius: 15px
         text-align: center
@@ -39,7 +41,7 @@
                 color: rgb(238, 195, 4)
             
             &__input
-                color: rgb(40, 39, 42)
+                color: $dark
                 font-size: 1.5rem
                 font-weight: bold
                 padding: .25em .5em
@@ -54,7 +56,7 @@
                         position: absolute
                         right: 10px
                         bottom: 10px
-                        color: rgb(40, 39, 42)
+                        color: $dark
 
                         &:hover
                             cursor: pointer
@@ -62,8 +64,8 @@
                         
 
         &__submit
-            color: rgb(40, 39, 42)
-            border: 2px solid rgb(40, 39, 42)
+            color: $dark
+            border: 2px solid $dark
             padding: 0.5em 1.5em
             font-size: 1.3em
             font-weight: bold
@@ -78,8 +80,8 @@
                 background-color: white
 
         &__cancel
-            color: rgb(40, 39, 42)
-            border: 2px solid rgb(40, 39, 42)
+            color: $dark
+            border: 2px solid $dark
             padding: 0.5em 1.5em
             font-size: 1.3em
             font-weight: bold
