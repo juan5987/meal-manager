@@ -1,15 +1,40 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RootState } from '../state';
 import { AppDispatch } from '../state/store';
 import { connect, ConnectedProps } from 'react-redux';
 
+import { IMeal } from '../state/meal';
+
 import Meal from './Meal';
+import { sortByProperty } from '../utils/sort';
 
 import '../styles/meals.sass';
 
 interface IMeals extends PropsFromRedux {}
 
 const Meals: React.FC<IMeals> = ({ meals }) => {
+  const [filteredMeals, setfilteredMeals] = useState<IMeal[]>([...meals]);
+  const sortValue: any = useRef();
+  const orderValue: any = useRef();
+
+  useEffect(() => {
+    setfilteredMeals([...meals]);
+  }, [meals]);
+
+  const handleSortMeals = () => {
+    const updatedMeals = [...filteredMeals].sort(
+      sortByProperty(sortValue.current.value, orderValue.current.value)
+    );
+    updatedMeals && setfilteredMeals(updatedMeals);
+  };
+
+  const handleSearchByName = (e: { target: { value: string } }) => {
+    const updatedMeals = [...meals].filter((meal: IMeal) =>
+      meal.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setfilteredMeals(updatedMeals);
+  };
+
   return (
     <div className='meals'>
       <div className='meals__meals'>
@@ -26,6 +51,8 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
                 className='meals__wrapper__filters__filter'
                 name='filter'
                 id='filter'
+                ref={sortValue}
+                onChange={handleSortMeals}
               >
                 <option
                   className='meals__wrapper__filters__filter__option'
@@ -82,16 +109,18 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
                 className='meals__wrapper__filters__order'
                 name='order'
                 id='order'
+                ref={orderValue}
+                onChange={handleSortMeals}
               >
                 <option
                   className='meals__wrapper__filters__order__option'
-                  value='increase'
+                  value='ascending'
                 >
                   Croissant
                 </option>
                 <option
                   className='meals__wrapper__filters__order__option'
-                  value='decrease'
+                  value='descending'
                 >
                   Décroissant
                 </option>
@@ -111,6 +140,7 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
                   id='searchbar'
                   name='searchbar'
                   placeholder='Rechercher un repas'
+                  onChange={handleSearchByName}
                 />
               </div>
             </div>
@@ -122,13 +152,34 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
           </div>
         </div>
         <div className='meals__meals__wrapper'>
-          {meals.map((meal) => {
-            if (meal.name.length > 25) {
-              return <Meal name={meal.name.slice(0, 25) + '...'} />;
-            } else {
-              return <Meal name={meal.name} />;
-            }
-          })}
+          {filteredMeals &&
+            filteredMeals.map((meal: IMeal) => {
+              if (meal.name.length > 25) {
+                return (
+                  <Meal
+                    name={meal.name.slice(0, 25) + '...'}
+                    calorie={meal.calorie}
+                    carbohydrate={meal.carbohydrate}
+                    protein={meal.protein}
+                    lipid={meal.lipid}
+                    fiber={meal.fiber}
+                    key={meal.name}
+                  />
+                );
+              } else {
+                return (
+                  <Meal
+                    name={meal.name}
+                    calorie={meal.calorie}
+                    carbohydrate={meal.carbohydrate}
+                    protein={meal.protein}
+                    lipid={meal.lipid}
+                    fiber={meal.fiber}
+                    key={meal.name}
+                  />
+                );
+              }
+            })}
         </div>
       </div>
     </div>

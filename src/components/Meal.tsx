@@ -3,6 +3,11 @@ import '../styles/meal.sass';
 
 interface Iprops {
   name: string;
+  calorie: number;
+  carbohydrate: number;
+  protein: number;
+  lipid: number;
+  fiber: number;
 }
 
 const Meal = (props: Iprops) => {
@@ -16,25 +21,27 @@ const Meal = (props: Iprops) => {
         </div>
         <div className='meal__info__element'>
           <div className='meal__info__element__name'>Calories</div>
-          <div className='meal__info__element__value'>1892 Kcal</div>
+          <div className='meal__info__element__value'>{props.calorie} Kcal</div>
         </div>
         <div className='meal__info__element'>
           <div className='meal__info__element__name'>Glucides</div>
-          <div className='meal__info__element__value'> 80 g</div>
+          <div className='meal__info__element__value'>
+            {props.carbohydrate} g
+          </div>
         </div>
       </div>
       <div className='meal__info'>
         <div className='meal__info__element'>
           <div className='meal__info__element__name'>Protéines</div>
-          <div className='meal__info__element__value'>28 g</div>
+          <div className='meal__info__element__value'>{props.protein} g</div>
         </div>
         <div className='meal__info__element'>
           <div className='meal__info__element__name'>Lipides</div>
-          <div className='meal__info__element__value'> 12 g</div>
+          <div className='meal__info__element__value'>{props.lipid} g</div>
         </div>
         <div className='meal__info__element'>
           <div className='meal__info__element__name'>Fibres</div>
-          <div className='meal__info__element__value'>11 g</div>
+          <div className='meal__info__element__value'>{props.fiber} g</div>
         </div>
       </div>
     </div>
