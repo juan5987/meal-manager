@@ -1,92 +1,81 @@
 @import 'vars'
-    
-.modal
-    display: flex
-    justify-content: center
-    position: absolute
-    top: 60px
-    width: 100vw
-    min-height: calc(100vh - 60px)
+
+.background
     background-image: url('../images/food-3270461.jpg')
     background-size: cover
-    color: white
-    padding-bottom: 2rem
+    position: fixed
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    z-index: -1
+    
+.createMeal
+    display: flex
+    flex-direction: column
+    align-items: center
+    margin-top: 60px
+    min-height: calc(100vh - 60px)
+    width: 100vw
+    
 
-    &__container
+    &__title
+        width: 100%
+        font-size: 2rem
+        font-weight: bold
         background-color: rgba(0,0,0,.8)
-        height: min-content
-        margin-top: 2rem
+        color: white
+        text-align: center
+        padding: 1rem
+        margin-top: 1rem
+        margin-bottom: 2rem
+
+    &__searchbar
+        display: flex
+        flex-direction: column
+        align-items: center
+        width: 100%
+        background-color: rgba(0,0,0,.6)
+        padding: 1rem
+
+        &__label
+            color: $primary
+            font-size: 1.2rem
+            font-weight: bold
+            margin-left: 1.5rem
+            width: 50%
+            margin-bottom: 0.25rem
+
+        &__input
+            font-size: 1.5rem
+            font-weight: bold
+            padding: 0.75rem 1.5rem
+            border: none
+            width: 50%
+            outline: none
+
+            &::placeholder
+                font-weight: lighter
+                font-size: 1.2rem
+                color: lightgrey
+
+    &__result
+        background-color: rgb(255,255,255)
         width: 50%
 
-        &__title
-            margin-bottom: 2rem
-            text-align: center
-            font-size: 2.5rem
-            background-color: rgba(0,0,0,.5)
-            padding: 1.25rem
+        &__element
+            border-bottom: 1px solid #000
+            font-size: 1.5rem
+            font-weight: bold
+            padding: .75rem 1.5rem
+            
+            &:hover
+                cursor: pointer
+                background-color: $primary
+                color: white
 
-        &__wrapper
-            padding: 0 4rem
+            &:first-child
+                border-top: 1px solid #000
 
-            &__field
-                display: flex
-                flex-direction: column
-                margin-bottom: 2rem
-
-                &__label
-                    font-size: 1.5rem
-                    font-weight: bold
-                    margin-left: .2rem
-                    margin-bottom: .2rem
-                    color: $primary
-                    
-
-                &__input
-                    font-size: 2rem
-                    font-weight: bold
-                    padding: .5rem 2rem
-                    outline: none
-                    border: 3px solid $dark
-                    border-radius: 1rem
-
-                    &:focus
-                        border: 3px solid $primary                    
-
-            &__buttons
-                display: flex
-                background-color: rgba(0,0,0,.5)
-                padding: 2rem
-
-                &__submit
-                    display: block
-                    margin: auto
-                    background-color: $primary
-                    color: white
-                    font-size: 1.5rem
-                    font-weight: bold
-                    padding: .5rem 2rem
-                    border-radius: 1rem
-                    border: none
-                    margin-right: 2rem
-
-                    &:hover
-                        cursor: pointer
-                        background-color: white
-                        color: $primary
-
-                &__back
-                    display: block
-                    margin: auto
-                    background-color: white
-                    color: $dark
-                    font-size: 1.5rem
-                    font-weight: bold
-                    padding: .5rem 2rem
-                    border-radius: 1rem
-                    border: none
-
-                    &:hover
-                        cursor: pointer
-                        color: $primary
-
-                
+            &:last-child
+                border-bottom: none

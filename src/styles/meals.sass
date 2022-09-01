@@ -9,17 +9,6 @@
     background-image: url('../images/food-3270461.jpg')
     background-size: cover
 
-    &__title
-        font-size: 2.2rem
-        font-weight: bold
-        background-color: $primary
-        color: white
-        width: 100%
-        text-align: center
-        padding: 1rem 0
-        border-top: 2px solid white
-        border-bottom: 2px solid white
-
     &__wrapper
         padding: 1rem 0
         width: 100%
@@ -83,6 +72,7 @@
                 padding: .5rem 1.5rem
                 border-radius: 20px
                 border: none
+                text-decoration: none
 
                 &:hover
                     cursor: pointer
@@ -102,6 +92,17 @@
             grid-template-columns: repeat(4, 1fr)
             grid-template-rows: 250px
             grid-auto-rows: 250px
+
+            &__nomeal
+                background-color: rgba(0,0,0,.7)
+                height: min-content
+                font-size: 2rem
+                color: white
+                padding: 1rem
+                margin-top: 4rem
+                display: block
+                margin: auto
+                grid-column: 2 / 4
 
 
 @media all and (max-width: 1800px)
