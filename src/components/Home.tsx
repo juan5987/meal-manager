@@ -17,7 +17,7 @@ const Home = () => {
       </h2>
       <div className='home__wrapper__inscription'>
         <Link to='/register' className='home__wrapper__inscription__button'>
-          Inscription
+          Commencer
         </Link>
       </div>
       <div className='home__wrapper'>

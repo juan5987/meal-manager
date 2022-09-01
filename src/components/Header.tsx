@@ -121,7 +121,7 @@ const Header: React.FC<IHeader> = ({ isLogged, logOut }) => {
             <li className='header__navbar-desktop__list__element'>
               <Link
                 className='header__navbar-desktop__list__element__link'
-                to='/home'
+                to='/'
               >
                 Accueil
               </Link>
@@ -164,7 +164,7 @@ const Header: React.FC<IHeader> = ({ isLogged, logOut }) => {
                 <Link
                   onClick={handleLogOut}
                   className='header__navbar__list__element__link'
-                  to='/home'
+                  to='/'
                 >
                   Déconnexion
                 </Link>

@@ -1,6 +1,6 @@
 import { ActionType } from '../action-types';
 import { IIngredient, IMeal } from '../meal';
-import { IWeight, IUser, IDailyIntake } from '../user';
+import { IWeight, IUser, IDailyIntake, IregisterInfo } from '../user';
 
 export interface setLoadingOnAction {
   type: ActionType.SET_LOADING_ON;
@@ -14,7 +14,7 @@ export interface loggingInAction {
   type: ActionType.LOG_IN;
 }
 
-export interface logOutInAction {
+export interface loggingOutAction {
   type: ActionType.LOG_OUT;
 }
 
@@ -80,9 +80,9 @@ export interface updateActivityAction {
   type: ActionType.UPDATE_ACTIVITY;
   payload:
     | 'sédentaire'
+    | 'activité légère'
     | 'activité modérée'
-    | 'activité intense'
-    | 'activité extrême';
+    | 'activité intense';
 }
 
 export interface updateUsernameAction {
@@ -118,17 +118,32 @@ export interface updateActivitySuccessAction {
   payload: {
     activity:
       | 'sédentaire'
+      | 'activité légère'
       | 'activité modérée'
-      | 'activité intense'
-      | 'activité extrême';
+      | 'activité intense';
   };
+}
+
+export interface registerAction {
+  type: ActionType.REGISTER;
+  payload: IregisterInfo;
+}
+
+export interface registerSuccessAction {
+  type: ActionType.REGISTER_SUCCESS;
+  payload: string;
+}
+
+export interface registerFailedAction {
+  type: ActionType.REGISTER_FAILED;
+  payload: string;
 }
 
 export type Action =
   | setLoadingOnAction
   | setLoadingOffAction
   | loggingInAction
-  | logOutInAction
+  | loggingOutAction
   | getMealsAction
   | getMealsSuccessAction
   | getMealsFailedAction
@@ -146,4 +161,7 @@ export type Action =
   | updateDailyAction
   | updateAgeSuccessAction
   | updateUsernameSuccessAction
-  | updateActivitySuccessAction;
+  | updateActivitySuccessAction
+  | registerAction
+  | registerSuccessAction
+  | registerFailedAction;

@@ -7,7 +7,14 @@ import Header from './Header';
 import LoginForm from './LoginForm';
 import Home from './Home';
 import Account from './Account';
-import AccountModif from './AccountModif';
+import CreateAccount from './CreateAccount';
+import ImcInfo from './ImcInfo';
+import IdealWeightInfo from './IdealWeightInfo';
+import Bmr from './Bmr';
+import DailiesInfo from './DailiesInfo';
+import RegisterConfirmation from './RegisterConfirm';
+import PasswordModif from './PasswordModif';
+import AccountDelete from './AccountDelete';
 
 import '../styles/app.sass';
 
@@ -18,10 +25,17 @@ const App: React.FC<IApp> = ({ isLogged }) => {
     <div className='app'>
       <Header />
       <Routes>
-        <Route path='/home' element={<Home />} />
+        <Route path='/' element={<Home />} />
         <Route path='/login' element={<LoginForm />} />
+        <Route path='/register' element={<CreateAccount />} />
         <Route path='/account' element={<Account />} />
-        <Route path='/account/modify' element={<AccountModif />} />
+        <Route path='/imc/info' element={<ImcInfo />} />
+        <Route path='/idealWeight/info' element={<IdealWeightInfo />} />
+        <Route path='/bmr/info' element={<Bmr />} />
+        <Route path='/dailies/info' element={<DailiesInfo />} />
+        <Route path='/confirmation/:code' element={<RegisterConfirmation />} />
+        <Route path='/profil/modify/password' element={<PasswordModif />} />
+        <Route path='/profil/delete' element={<AccountDelete />} />
       </Routes>
     </div>
   );
