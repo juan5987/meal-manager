@@ -1,0 +1,336 @@
+@import 'vars'
+
+.background
+    background-image: url('../images/food-3270461.jpg')
+    background-size: cover
+    position: fixed
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    z-index: -1
+    
+.createMeal
+    display: flex
+    flex-direction: column
+    align-items: center
+    margin-top: 60px
+    margin-bottom: 2rem
+    min-height: calc(100vh - 60px)
+    width: 100vw
+
+    &__title
+        width: 100%
+        font-size: 2rem
+        font-weight: bold
+        background-color: rgba(0,0,0,.8)
+        color: white
+        text-align: center
+        padding: 1rem
+        margin-top: 1rem
+        margin-bottom: 2rem
+
+    &__searchbar
+        display: flex
+        flex-direction: column
+        align-items: center
+        width: 100%
+        background-color: rgba(0,0,0,.6)
+        padding: 1rem
+
+        &__label
+            color: $primary
+            font-size: 1.2rem
+            font-weight: bold
+            margin-left: 1.5rem
+            width: 50%
+            margin-bottom: 0.25rem
+
+        &__input
+            font-size: 1.5rem
+            font-weight: bold
+            padding: 0.75rem 1.5rem
+            border: none
+            width: 50%
+            outline: none
+
+            &::placeholder
+                font-weight: lighter
+                font-size: 1.2rem
+                color: lightgrey
+
+    &__result
+        background-color: rgb(255,255,255)
+        width: 50%
+
+        &__element
+            border-bottom: 1px solid #000
+            font-size: 1.2rem
+            padding: .75rem 1.5rem
+            display: flex
+            justify-content: space-between
+
+            &--add
+                text-decoration: underline
+                color: $primary
+        
+            &__already
+                background-color: #ffeea2
+                color: $primary
+            
+            &:hover
+                cursor: pointer
+                background-color: $primary
+                color: white
+
+            &:first-child
+                border-top: 1px solid #000
+
+            &:last-child
+                border-bottom: none
+
+
+    &__ingredients
+        color: white
+        margin-top: 1rem
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        background-color: rgba(0,0,0,.6)
+        padding: 1rem
+
+        &__name
+            display: flex
+            flex-direction: column
+            align-items: center
+            justify-content: center
+            margin-bottom: 1rem
+
+            &__label
+                color: $primary
+                font-weight: bold
+                font-size: 1.5rem
+                margin-bottom: .25rem
+
+            &__input
+                font-size: 1.5rem
+                background-color: rgba(0,0,0,.6)
+                border: none
+                color: white
+                padding: .75rem 1.5rem
+                outline: none
+                border: 1px solid $primary
+
+
+        &__ingredient
+            background-color: rgba(0,0,0,.6)
+            display: flex
+            align-items: center
+            justify-content: space-between
+            margin-bottom: 1rem
+            padding: 1rem
+            width: min-content
+            border: 1px solid $primary
+
+            &:last-child
+                margin-bottom: 0
+
+            &__name
+                color: $primary
+                font-size: 1.2rem
+                margin-right: 1rem
+                padding: 0 1rem
+                min-width: 350px
+
+            &__nutrition
+                display: flex
+                align-items: center
+
+                &__element
+                    display: flex
+                    flex-direction: column
+                    align-items: center
+                    width: 4.5rem
+                    margin-right: 1rem
+
+                    &--name
+                        display: flex
+                        flex-direction: column
+                        align-items: center
+                        margin-right: 1rem
+                        min-width: 350px
+
+                    &__name
+                        color: $primary
+                        margin-bottom: .5rem
+                        font-weight: bold
+
+                    &__value
+                        font-weight: bold
+
+                        &--input
+                            width: 80px
+                            padding: .5rem
+                            font-size: 1.2rem
+                            font-weight: bold
+                            text-align: center
+                            outline: none
+                            
+                            &:focus
+                                outline: 3px solid $primary
+
+                            &--name
+                                min-width: 335px
+                                font-size: 1.2rem
+                                font-weight: bold
+                                margin-right: 2rem
+                                outline: none
+                                padding: .5rem 1rem
+                                font-weight: bold
+
+                                &:focus
+                                    outline: 3px solid $primary
+
+                    &__input
+                        font-size: 1rem
+                        font-weight: bold
+                        width: 5rem
+                        background-color: #000000
+                        color: white
+                        border: 2px solid  $primary
+                        padding: .25rem .5rem
+                        text-align: center
+                        outline: none
+
+                &__trash:hover
+                    color: $primary
+                    cursor: pointer
+
+        &__buttons
+            display: flex
+
+            &__submit
+                background-color: $primary
+                color: white
+                padding: .6rem 2rem
+                border: none
+                font-size: 1.2rem
+                font-weight: bold
+                margin-right: 4rem
+                border-radius: 1rem
+                width: 10rem
+
+                &:hover
+                    background-color: white
+                    color: $primary
+                    cursor: pointer
+            
+            &__cancel
+                
+                padding: .5rem 2rem
+                border: none
+                font-size: 1.2rem
+                font-weight: bold
+                border-radius: 1rem
+                width: 10rem
+                background-color: red
+                color: white
+
+                &:hover
+                    background-color: red
+                    color: white
+                    cursor: pointer
+                    background-color: white
+                    color: red
+
+        &__empty
+            font-size: 1.2rem
+            font-weight: bold
+            
+    &__nutrition
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        background-color: rgba(0,0,0,.6)
+        margin-top: 1rem
+        padding: 1rem
+
+        &__title
+            color: $primary
+            margin-bottom: 1rem
+
+        &__values
+            display: flex
+            justify-content: space-between
+            background-color: rgba(0,0,0,.6)
+            padding: .5rem 2rem
+            border: 1px solid $primary
+
+            &__calorie
+                color: white
+                font-size: 1.2rem
+                font-weight: bold
+
+            &__element
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: center
+                margin-right: 2rem
+
+                &:last-child
+                    margin-right: 0
+
+                &__name
+                    color: $primary
+                    font-weight: bold
+                    font-size: 1.2rem
+                
+                &__value
+                    color: white
+                    font-weight: bold
+                    font-size: 1.2rem
+
+
+    &__modal
+        position: fixed
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
+        background-color: rgba(0,0,0,.8)
+        display: flex
+        align-items: center
+        justify-content: center
+
+        &__wrapper
+            background-color: $dark
+            padding: 2rem
+
+            &__title
+                font-size: 1.5rem
+                color: white
+                margin-bottom: 2rem
+                text-align: center
+
+            &__form
+                display: flex
+                flex-direction: column
+
+                &__element
+                    display: flex
+                    flex-direction: column
+
+                    &__label
+                        color: $primary
+                        font-size: 1.2rem
+                        font-weight: bold
+                        margin-bottom: .25rem
+
+                    &__input
+                        font-size: 1.2rem
+                        font-weight: bold
+                        padding: .6rem 1.2rem
+                        outline: none
