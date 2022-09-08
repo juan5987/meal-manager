@@ -16,6 +16,7 @@ import RegisterConfirmation from './RegisterConfirm';
 import PasswordModif from './PasswordModif';
 import AccountDelete from './AccountDelete';
 import Meals from './Meals';
+import CreateMeal from './CreateMeal';
 
 import '../styles/app.sass';
 
@@ -38,6 +39,7 @@ const App: React.FC<IApp> = ({ isLogged }) => {
         <Route path='/profil/modify/password' element={<PasswordModif />} />
         <Route path='/profil/delete' element={<AccountDelete />} />
         <Route path='/meals' element={<Meals />} />
+        <Route path='/create/meal' element={<CreateMeal />} />
       </Routes>
     </div>
   );
