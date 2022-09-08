@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+
 import { RootState } from '../state';
 import { IMeal } from '../state/meal';
 import { IIngredient } from '../state/meal';
@@ -14,6 +16,7 @@ interface ICreateMealModal {
 const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
   const userId = localStorage.getItem('id');
   const [errorMsg, setErrorMsg] = useState('');
+  const navigate: NavigateFunction = useNavigate();
   const [searchValue, setSearchValue] = useState('');
   const [searchResult, setSearchResult] = useState<IIngredient[]>();
   const [isResultOpen, setIsResultOpen] = useState<boolean>(false);
@@ -30,6 +33,66 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
   const [mealName, setMealName] = useState('');
   const [isCreateIngredientModalOpen, setIsCreateIngredientModalOpen] =
     useState(false);
+  const [newIngredient, setNewIngredient] = useState<IIngredient>({
+    id: 0,
+    name: '',
+    quantity: 100,
+    calorie: 0,
+    carbohydrate: 0,
+    protein: 0,
+    lipid: 0,
+    fiber: 0,
+  });
+
+  const handleChangeCreateIngredientModal = (e: any) => {
+    setNewIngredient({
+      ...newIngredient,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleCancelCreateIngredientModal = (e: any) => {
+    setIsCreateIngredientModalOpen(false);
+    setNewIngredient({
+      id: 0,
+      name: '',
+      quantity: 100,
+      calorie: 0,
+      carbohydrate: 0,
+      protein: 0,
+      lipid: 0,
+      fiber: 0,
+    });
+  };
+
+  const handleSubmitCreateIngredientModal = (e: any) => {
+    e.preventDefault();
+    setNewIngredient({
+      id: 0,
+      name: '',
+      quantity: 100,
+      calorie: 0,
+      carbohydrate: 0,
+      protein: 0,
+      lipid: 0,
+      fiber: 0,
+    });
+
+    setMealIngredients([
+      ...mealIngredients,
+      {
+        id: 0,
+        name: newIngredient.name,
+        quantity: Number(newIngredient.quantity),
+        calorie: Number(newIngredient.calorie),
+        carbohydrate: Number(newIngredient.carbohydrate),
+        protein: Number(newIngredient.protein),
+        lipid: Number(newIngredient.lipid),
+        fiber: Number(newIngredient.fiber),
+      },
+    ]);
+    setIsCreateIngredientModalOpen(false);
+  };
 
   const handleChangeSearchbar = (e: any) => {
     setIsResultOpen(true);
@@ -59,7 +122,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
   };
 
   const handleQuantityChange = (e: any) => {
-    if (e.target.value !== '') {
+    if (e.target.value !== '' && e.target.value > 0) {
       const updatedIngredients = mealIngredients.map((ingredient) => {
         if (ingredient.name === e.target.dataset.mealname) {
           return {
@@ -374,30 +437,162 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
             <button className='createMeal__ingredients__buttons__submit'>
               Enregistrer
             </button>
-            <button className='createMeal__ingredients__buttons__cancel'>
+            <button
+              type='submit'
+              className='createMeal__ingredients__buttons__cancel'
+              onClick={() => navigate('/meals')}
+            >
               Annuler
             </button>
           </div>
         )}
       </div>
       {isCreateIngredientModalOpen && (
-        <div className='createMeal__modal'>
-          <div className='createMeal__modal__wrapper'>
+        <div
+          className='createMeal__modal'
+          onMouseDown={() => setIsCreateIngredientModalOpen(false)}
+        >
+          <div
+            className='createMeal__modal__wrapper'
+            onMouseDown={(e) => e.stopPropagation()}
+          >
             <h2 className='createMeal__modal__wrapper__title'>
               Création d'un aliment
             </h2>
-            <form className='createMeal__modal__wrapper__form'>
-              <div className='createMeal__modal__wrapper__form__element'>
+            <form
+              className='createMeal__modal__wrapper__form'
+              onSubmit={handleSubmitCreateIngredientModal}
+            >
+              <div className='createMeal__modal__wrapper__form__element--name'>
                 <label
-                  htmlFor=''
-                  className='createMeal__modal__wrapper__form__element__label'
+                  htmlFor='name'
+                  className='createMeal__modal__wrapper__form__element__label--name'
                 >
                   Nom
                 </label>
                 <input
                   type='text'
-                  className='createMeal__modal__wrapper__form__element__input'
+                  id='name'
+                  className='createMeal__modal__wrapper__form__element__input--name'
+                  value={newIngredient.name}
+                  onChange={handleChangeCreateIngredientModal}
+                  required
                 />
+              </div>
+              <div className='createMeal__modal__wrapper__form__element'>
+                <h3 className='createMeal__modal__wrapper__form__element__title'>
+                  Valeurs nutritives
+                </h3>
+              </div>
+              <div className='createMeal__modal__wrapper__form__element'>
+                <label
+                  htmlFor='quantity'
+                  className='createMeal__modal__wrapper__form__element__label'
+                >
+                  Quantité (g)
+                </label>
+                <input
+                  type='number'
+                  id='quantity'
+                  className='createMeal__modal__wrapper__form__element__input'
+                  onChange={handleChangeCreateIngredientModal}
+                  value={newIngredient.quantity}
+                  required
+                />
+              </div>
+              <div className='createMeal__modal__wrapper__form__element'>
+                <label
+                  htmlFor='calorie'
+                  className='createMeal__modal__wrapper__form__element__label'
+                >
+                  Calories (Kcal)
+                </label>
+                <input
+                  type='number'
+                  id='calorie'
+                  className='createMeal__modal__wrapper__form__element__input'
+                  onChange={handleChangeCreateIngredientModal}
+                  value={newIngredient.calorie}
+                  required
+                />
+              </div>
+              <div className='createMeal__modal__wrapper__form__element'>
+                <label
+                  htmlFor='carbohydrate'
+                  className='createMeal__modal__wrapper__form__element__label'
+                >
+                  Glucides (g)
+                </label>
+                <input
+                  type='number'
+                  id='carbohydrate'
+                  className='createMeal__modal__wrapper__form__element__input'
+                  onChange={handleChangeCreateIngredientModal}
+                  value={newIngredient.carbohydrate}
+                  required
+                />
+              </div>
+              <div className='createMeal__modal__wrapper__form__element'>
+                <label
+                  htmlFor='protein'
+                  className='createMeal__modal__wrapper__form__element__label'
+                >
+                  Protéines (g)
+                </label>
+                <input
+                  type='number'
+                  id='protein'
+                  className='createMeal__modal__wrapper__form__element__input'
+                  onChange={handleChangeCreateIngredientModal}
+                  value={newIngredient.protein}
+                  required
+                />
+              </div>
+              <div className='createMeal__modal__wrapper__form__element'>
+                <label
+                  htmlFor='lipid'
+                  className='createMeal__modal__wrapper__form__element__label'
+                >
+                  Lipides (g)
+                </label>
+                <input
+                  type='number'
+                  id='lipid'
+                  className='createMeal__modal__wrapper__form__element__input'
+                  onChange={handleChangeCreateIngredientModal}
+                  value={newIngredient.lipid}
+                  required
+                />
+              </div>
+              <div className='createMeal__modal__wrapper__form__element'>
+                <label
+                  htmlFor='fiber'
+                  className='createMeal__modal__wrapper__form__element__label'
+                >
+                  Fibres (g)
+                </label>
+                <input
+                  type='number'
+                  id='fiber'
+                  className='createMeal__modal__wrapper__form__element__input'
+                  onChange={handleChangeCreateIngredientModal}
+                  value={newIngredient.fiber}
+                  required
+                />
+              </div>
+              <div className='createMeal__modal__wrapper__form__buttons'>
+                <button
+                  type='submit'
+                  className='createMeal__modal__wrapper__form__buttons__submit'
+                >
+                  Valider
+                </button>
+                <button
+                  className='createMeal__modal__wrapper__form__buttons__cancel'
+                  onMouseDown={handleCancelCreateIngredientModal}
+                >
+                  Annuler
+                </button>
               </div>
             </form>
           </div>

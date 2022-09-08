@@ -106,6 +106,7 @@
             align-items: center
             justify-content: center
             margin-bottom: 1rem
+            width: 100%
 
             &__label
                 color: $primary
@@ -121,6 +122,8 @@
                 padding: .75rem 1.5rem
                 outline: none
                 border: 1px solid $primary
+                width: 50%
+                
 
 
         &__ingredient
@@ -304,16 +307,21 @@
         display: flex
         align-items: center
         justify-content: center
+        
 
         &__wrapper
             background-color: $dark
             padding: 2rem
+            border-radius: 1.5rem
 
             &__title
                 font-size: 1.5rem
                 color: white
                 margin-bottom: 2rem
                 text-align: center
+                background-color: $primary
+                padding: .75rem 1.5rem
+                border-radius: 1.5rem
 
             &__form
                 display: flex
@@ -321,16 +329,87 @@
 
                 &__element
                     display: flex
-                    flex-direction: column
+                    align-items: center
+                    justify-content: center
+                    margin-bottom: 1rem
+
+                    &__title
+                        color: $primary
+                        text-align: left
+                        border-bottom: 3px solid $primary
+                        padding-bottom: .5rem
+                        width: 100%
+
+                    &--name
+                        display: flex
+                        flex-direction: column
 
                     &__label
-                        color: $primary
+                        color: white
                         font-size: 1.2rem
                         font-weight: bold
                         margin-bottom: .25rem
+                        width: 200px
+
+                        &--name
+                            color: $primary
+                            font-size: 1.2rem
+                            font-weight: bold
+                            margin-bottom: .25rem
+                            width: 100%
+                            text-align: center
 
                     &__input
                         font-size: 1.2rem
                         font-weight: bold
-                        padding: .6rem 1.2rem
+                        padding: .6rem
                         outline: none
+                        width: 100px
+                        text-align: center
+
+                        &--name
+                            font-size: 1.2rem
+                            font-weight: bold
+                            padding: .6rem 1.2rem
+                            outline: none
+                            margin-bottom: 2rem
+
+                &__buttons
+                    color:red
+                    width: 100%
+                    display: flex
+                    justify-content: space-around
+
+                    &__submit
+                        background-color: $primary
+                        color: white
+                        padding: .6rem 1rem
+                        border: none
+                        font-size: 1.2rem
+                        font-weight: bold
+                        margin-right: 4rem
+                        border-radius: 1rem
+                        width: 7rem
+
+                        &:hover
+                            background-color: white
+                            color: $primary
+                            cursor: pointer
+            
+                    &__cancel
+                        
+                        padding: .5rem 1rem
+                        border: none
+                        font-size: 1.2rem
+                        font-weight: bold
+                        border-radius: 1rem
+                        background-color: red
+                        color: white
+                        width: 7rem
+
+                        &:hover
+                            background-color: red
+                            color: white
+                            cursor: pointer
+                            background-color: white
+                            color: red
