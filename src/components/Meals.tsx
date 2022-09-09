@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { RootState } from '../state';
 import { AppDispatch } from '../state/store';
 import { IMeal } from '../state/meal';
+import { getIngredients, getMeals } from '../state/action-creators';
 
 import Meal from './Meal';
 import { sortByProperty } from '../utils/sort';
@@ -14,6 +15,8 @@ import '../styles/meals.sass';
 interface IMeals extends PropsFromRedux {}
 
 const Meals: React.FC<IMeals> = ({ meals }) => {
+  const dispatch = useDispatch();
+  const userId = Number(localStorage.getItem('id'));
   const [filteredMeals, setfilteredMeals] = useState<IMeal[]>([...meals]);
   const sortValue: any = useRef();
   const orderValue: any = useRef();
@@ -23,6 +26,11 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
   useEffect(() => {
     setfilteredMeals([...meals]);
   }, [meals]);
+
+  useEffect(() => {
+    dispatch(getIngredients());
+    dispatch(getMeals(userId));
+  }, []);
 
   const handleSortMeals = () => {
     const updatedMeals = [...filteredMeals].sort(
@@ -165,7 +173,7 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
                 return (
                   <Meal
                     name={meal.name.slice(0, 25) + '...'}
-                    calorie={meal.calorie}
+                    calorie={Math.round(meal.calorie)}
                     carbohydrate={meal.carbohydrate}
                     protein={meal.protein}
                     lipid={meal.lipid}
@@ -177,7 +185,7 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
                 return (
                   <Meal
                     name={meal.name}
-                    calorie={meal.calorie}
+                    calorie={Math.round(meal.calorie)}
                     carbohydrate={meal.carbohydrate}
                     protein={meal.protein}
                     lipid={meal.lipid}
