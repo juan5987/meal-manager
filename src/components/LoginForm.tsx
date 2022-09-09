@@ -16,7 +16,7 @@ const LoginForm: React.FC<ILoginForm> = ({ isLogged, loading, errorMsg }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const [stayConnected, setStayConnected] = useState<boolean>(false);
   const [formValues, setFormValues] = useState({
-    email: 'juan@email.fr',
+    email: 'juan@email.fr2',
     password: 'Juan1234',
   });
   const dispatch = useDispatch();

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
+import { getIngredients } from '../state/action-creators';
 import { RootState } from '../state';
 import { IMeal } from '../state/meal';
 import { IIngredient } from '../state/meal';
@@ -15,6 +17,7 @@ interface ICreateMealModal {
 
 const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
   const userId = localStorage.getItem('id');
+  const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState('');
   const navigate: NavigateFunction = useNavigate();
   const [searchValue, setSearchValue] = useState('');
@@ -45,6 +48,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
   });
 
   const handleChangeCreateIngredientModal = (e: any) => {
+    setErrorMsg('');
     setNewIngredient({
       ...newIngredient,
       [e.target.id]: e.target.value,
@@ -52,6 +56,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
   };
 
   const handleCancelCreateIngredientModal = (e: any) => {
+    setErrorMsg('');
     setIsCreateIngredientModalOpen(false);
     setNewIngredient({
       id: 0,
@@ -67,36 +72,70 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
 
   const handleSubmitCreateIngredientModal = (e: any) => {
     e.preventDefault();
-    setNewIngredient({
-      id: 0,
-      name: '',
-      quantity: 100,
-      calorie: 0,
-      carbohydrate: 0,
-      protein: 0,
-      lipid: 0,
-      fiber: 0,
-    });
 
-    setMealIngredients([
-      ...mealIngredients,
-      {
+    if (
+      ![...mealIngredients].find(
+        (ingredient) => ingredient.name === newIngredient.name
+      ) &&
+      !ingredients.find((ingredient) => ingredient.name === newIngredient.name)
+    ) {
+      setNewIngredient({
         id: 0,
-        name: newIngredient.name,
-        quantity: Number(newIngredient.quantity),
-        calorie: Number(newIngredient.calorie),
-        carbohydrate: Number(newIngredient.carbohydrate),
-        protein: Number(newIngredient.protein),
-        lipid: Number(newIngredient.lipid),
-        fiber: Number(newIngredient.fiber),
-      },
-    ]);
-    setIsCreateIngredientModalOpen(false);
+        name: '',
+        quantity: 100,
+        calorie: 0,
+        carbohydrate: 0,
+        protein: 0,
+        lipid: 0,
+        fiber: 0,
+      });
+
+      setMealIngredients([
+        ...mealIngredients,
+        {
+          id: 0,
+          name: newIngredient.name,
+          quantity: Number(newIngredient.quantity),
+          calorie: Number(newIngredient.calorie),
+          carbohydrate: Number(newIngredient.carbohydrate),
+          protein: Number(newIngredient.protein),
+          lipid: Number(newIngredient.lipid),
+          fiber: Number(newIngredient.fiber),
+        },
+      ]);
+      setIsCreateIngredientModalOpen(false);
+
+      axios({
+        method: 'post',
+        url: 'http://localhost:3001/add/ingredient',
+        data: [
+          newIngredient.name,
+          newIngredient.quantity,
+          newIngredient.calorie,
+          newIngredient.protein,
+          newIngredient.carbohydrate,
+          newIngredient.lipid,
+          newIngredient.fiber,
+        ],
+      })
+        .then((result) => {
+          if ((result.status = 200)) {
+            setIsCreateIngredientModalOpen(false);
+            dispatch(getIngredients());
+          }
+        })
+        .catch((error) => {
+          setErrorMsg(error.response.data.message);
+        });
+    } else {
+      setErrorMsg('Un ingrédient avec le même nom existe déjà');
+    }
   };
 
   const handleChangeSearchbar = (e: any) => {
     setIsResultOpen(true);
     setSearchValue(e.target.value);
+    setErrorMsg('');
     const result = ingredients.filter((ingredient) =>
       ingredient.name.toLowerCase().includes(e.target.value.toLowerCase())
     );
@@ -105,6 +144,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
   };
 
   const handleAddIngredient = (e: any) => {
+    setErrorMsg('');
     const newIngredient = searchResult?.find(
       (ingredient) => ingredient.name === e.target.innerText
     );
@@ -122,6 +162,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
   };
 
   const handleQuantityChange = (e: any) => {
+    setErrorMsg('');
     if (e.target.value !== '' && e.target.value > 0) {
       const updatedIngredients = mealIngredients.map((ingredient) => {
         if (ingredient.name === e.target.dataset.mealname) {
@@ -144,6 +185,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
   };
 
   const handleDeleteIngredient = (e: any) => {
+    setErrorMsg('');
     const updatedIngredients = [...mealIngredients].filter(
       (ingredient) => ingredient.name !== e.target.dataset.mealname
     );
@@ -154,6 +196,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
   const handleAddNewIngredient = (e: any) => {
     setIsResultOpen(false);
     setSearchValue('');
+    setErrorMsg('');
     setIsCreateIngredientModalOpen(true);
   };
 
@@ -186,24 +229,35 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
     setErrorMsg('');
 
     const mealNameAlreadyExist = meals.find(
-      (meal: IMeal) => meal.name === e.target.name.value
+      (meal: IMeal) =>
+        meal.name.toLowerCase() === e.target[0].value.toLowerCase()
     );
 
-    if (mealNameAlreadyExist) setErrorMsg('Un repas porte déjà ce nom');
-    // else {
-    //   axios({
-    //     method: 'post',
-    //     url: `http://localhost:3001/add/meal/${userId}`,
-    //     data: {
-    //       name: e.target.name.value,
-    //       calorie: e.target.calorie.value,
-    //       carbohydrate: e.target.carbohydrate.value,
-    //       lipid: e.target.lipid.value,
-    //       fiber: e.target.fiber.value,
-    //       ingredients: [...ingredients],
-    //     },
-    //   });
-    // }
+    if (mealNameAlreadyExist) {
+      setErrorMsg('Un repas porte déjà ce nom');
+    } else {
+      setErrorMsg('');
+
+      axios({
+        method: 'post',
+        url: `http://localhost:3001/add/meal/${userId}`,
+        data: {
+          name: e.target[0].value,
+          calorie: Math.round(mealNutrition.calorie * 10) / 10,
+          protein: Math.round(mealNutrition.protein * 10) / 10,
+          carbohydrate: Math.round(mealNutrition.carbohydrate * 10) / 10,
+          lipid: Math.round(mealNutrition.lipid * 10) / 10,
+          fiber: Math.round(mealNutrition.fiber * 10) / 10,
+          ingredients: [...mealIngredients],
+        },
+      })
+        .then((result) => {
+          if (result.status === 200) {
+            navigate('/meals');
+          }
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   return (
@@ -304,7 +358,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
           </div>
         </div>
       </div>
-      <div className='createMeal__ingredients'>
+      <form className='createMeal__ingredients' onSubmit={handleSubmit}>
         <div className='createMeal__ingredients__name'>
           <label
             className='createMeal__ingredients__name__label'
@@ -318,6 +372,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
             id='mealName'
             value={mealName}
             onChange={(e) => setMealName(e.target.value)}
+            required
           />
         </div>
 
@@ -393,9 +448,9 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
                   viewBox='0 0 24 24'
                   fill='none'
                   stroke='currentColor'
-                  stroke-width='2'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
+                  strokeWidth='2'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
                   className='createMeal__ingredients__ingredient__nutrition__trash'
                   onClick={handleDeleteIngredient}
                   data-mealname={ingredient.name}
@@ -432,13 +487,20 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
           </div>
         )}
 
+        {errorMsg && (
+          <div className='createMeal__ingredients__errorMsg'>{errorMsg}</div>
+        )}
+
         {mealIngredients.length > 0 && (
           <div className='createMeal__ingredients__buttons'>
-            <button className='createMeal__ingredients__buttons__submit'>
+            <button
+              type='submit'
+              className='createMeal__ingredients__buttons__submit'
+            >
               Enregistrer
             </button>
             <button
-              type='submit'
+              type='button'
               className='createMeal__ingredients__buttons__cancel'
               onClick={() => navigate('/meals')}
             >
@@ -446,19 +508,11 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
             </button>
           </div>
         )}
-      </div>
+      </form>
       {isCreateIngredientModalOpen && (
-        <div
-          className='createMeal__modal'
-          onMouseDown={() => setIsCreateIngredientModalOpen(false)}
-        >
-          <div
-            className='createMeal__modal__wrapper'
-            onMouseDown={(e) => e.stopPropagation()}
-          >
-            <h2 className='createMeal__modal__wrapper__title'>
-              Création d'un aliment
-            </h2>
+        <div className='createMeal__modal'>
+          <h2 className='createMeal__modal__title'>Création d'un aliment</h2>
+          <div className='createMeal__modal__wrapper'>
             <form
               className='createMeal__modal__wrapper__form'
               onSubmit={handleSubmitCreateIngredientModal}
@@ -468,7 +522,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
                   htmlFor='name'
                   className='createMeal__modal__wrapper__form__element__label--name'
                 >
-                  Nom
+                  Nom de l'aliment
                 </label>
                 <input
                   type='text'
@@ -478,6 +532,13 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
                   onChange={handleChangeCreateIngredientModal}
                   required
                 />
+              </div>
+              <div className='createMeal__modal__wrapper__form__info'>
+                <p className='createMeal__modal__wrapper__form__info__content'>
+                  Complétez les valeurs nutritives telles qu'elles sont
+                  indiquées sur l'emballage. Vous pourrez modifier la quantité
+                  pour votre repas une fois l'aliment créé
+                </p>
               </div>
               <div className='createMeal__modal__wrapper__form__element'>
                 <h3 className='createMeal__modal__wrapper__form__element__title'>
@@ -497,6 +558,7 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
                   className='createMeal__modal__wrapper__form__element__input'
                   onChange={handleChangeCreateIngredientModal}
                   value={newIngredient.quantity}
+                  min={0}
                   required
                 />
               </div>
@@ -513,6 +575,8 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
                   className='createMeal__modal__wrapper__form__element__input'
                   onChange={handleChangeCreateIngredientModal}
                   value={newIngredient.calorie}
+                  min={0}
+                  step={0.1}
                   required
                 />
               </div>
@@ -529,6 +593,8 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
                   className='createMeal__modal__wrapper__form__element__input'
                   onChange={handleChangeCreateIngredientModal}
                   value={newIngredient.carbohydrate}
+                  min={0}
+                  step={0.1}
                   required
                 />
               </div>
@@ -545,6 +611,8 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
                   className='createMeal__modal__wrapper__form__element__input'
                   onChange={handleChangeCreateIngredientModal}
                   value={newIngredient.protein}
+                  min={0}
+                  step={0.1}
                   required
                 />
               </div>
@@ -561,6 +629,8 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
                   className='createMeal__modal__wrapper__form__element__input'
                   onChange={handleChangeCreateIngredientModal}
                   value={newIngredient.lipid}
+                  min={0}
+                  step={0.1}
                   required
                 />
               </div>
@@ -577,9 +647,16 @@ const CreateMeal: React.FC<ICreateMealModal> = ({ meals, ingredients }) => {
                   className='createMeal__modal__wrapper__form__element__input'
                   onChange={handleChangeCreateIngredientModal}
                   value={newIngredient.fiber}
+                  min={0}
+                  step={0.1}
                   required
                 />
               </div>
+              {errorMsg && (
+                <p className='createMeal__modal__wrapper__form__errorMsg'>
+                  {errorMsg}
+                </p>
+              )}
               <div className='createMeal__modal__wrapper__form__buttons'>
                 <button
                   type='submit'
