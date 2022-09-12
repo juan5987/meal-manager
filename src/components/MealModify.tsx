@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Moment from 'moment';
+import { connect, useDispatch } from 'react-redux';
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 import { RootState } from '../state';
 import { IIngredient, IMeal } from '../state/meal';
+import { getIngredients } from '../state/action-creators';
 
 interface IMealModify {
   meals: IMeal[];
@@ -11,13 +14,13 @@ interface IMealModify {
 
 const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
   const navigate: NavigateFunction = useNavigate();
+  const dispatch = useDispatch();
+  const userId = localStorage.getItem('id');
+  const mealId = Number(useParams().id);
   const [errorMsg, setErrorMsg] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [searchResult, setSearchResult] = useState<IIngredient[]>();
   const [isResultOpen, setIsResultOpen] = useState<boolean>(false);
-  const [mealIngredients, setMealIngredients] = useState<IIngredient[] | []>(
-    []
-  );
   const [mealNutrition, setMealNutrition] = useState({
     calorie: 0,
     carbohydrate: 0,
@@ -25,7 +28,28 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
     lipid: 0,
     fiber: 0,
   });
-  const [mealName, setMealName] = useState('');
+  const [actualMeal, setActualMeal] = useState<IMeal>({
+    id: 0,
+    name: '',
+    calorie: 0,
+    carbohydrate: 0,
+    protein: 0,
+    lipid: 0,
+    fiber: 0,
+    updated_at: 0,
+    ingredients: [
+      {
+        id: 0,
+        name: '',
+        quantity: 100,
+        calorie: 0,
+        carbohydrate: 0,
+        protein: 0,
+        lipid: 0,
+        fiber: 0,
+      },
+    ],
+  });
   const [isCreateIngredientModalOpen, setIsCreateIngredientModalOpen] =
     useState(false);
   const [newIngredient, setNewIngredient] = useState<IIngredient>({
@@ -81,20 +105,23 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
 
     if (
       newIngredient &&
-      ![...mealIngredients].find(
+      ![...actualMeal.ingredients].find(
         (mealIngredient) => mealIngredient.name === newIngredient.name
       )
     ) {
       setIsResultOpen(false);
       setSearchValue('');
-      setMealIngredients([...mealIngredients, newIngredient]);
+      setActualMeal({
+        ...actualMeal,
+        ingredients: [...actualMeal.ingredients, newIngredient],
+      });
     }
   };
 
   const handleQuantityChange = (e: any) => {
     setErrorMsg('');
     if (e.target.value !== '' && e.target.value > 0) {
-      const updatedIngredients = mealIngredients.map((ingredient) => {
+      const updatedIngredients = actualMeal.ingredients.map((ingredient) => {
         if (ingredient.name === e.target.dataset.mealname) {
           return {
             ...ingredient,
@@ -110,17 +137,23 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
           };
         } else return ingredient;
       });
-      setMealIngredients(updatedIngredients);
+      setActualMeal({
+        ...actualMeal,
+        ingredients: updatedIngredients,
+      });
     }
   };
 
   const handleDeleteIngredient = (e: any) => {
     setErrorMsg('');
-    const updatedIngredients = [...mealIngredients].filter(
+    const updatedIngredients = [...actualMeal.ingredients].filter(
       (ingredient) => ingredient.name !== e.target.dataset.mealname
     );
 
-    setMealIngredients([...updatedIngredients]);
+    setActualMeal({
+      ...actualMeal,
+      ingredients: [...updatedIngredients],
+    });
   };
 
   const handleAddNewIngredient = (e: any) => {
@@ -130,9 +163,118 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
     setIsCreateIngredientModalOpen(true);
   };
 
-  const handleSubmit = (e: any) => {};
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
 
-  const handleSubmitCreateIngredientModal = (e: any) => {};
+    axios({
+      method: 'delete',
+      url: `http://localhost:3001/delete/meal/${mealId}`,
+    })
+      .then((result) => {
+        e.preventDefault();
+        setErrorMsg('');
+
+        const mealNameAlreadyExist = meals.find(
+          (meal: IMeal) =>
+            meal.name.toLowerCase() === e.target[0].value.toLowerCase() &&
+            meal.id !== mealId
+        );
+
+        if (mealNameAlreadyExist) {
+          setErrorMsg('Un repas porte déjà ce nom');
+        } else {
+          setErrorMsg('');
+
+          axios({
+            method: 'post',
+            url: `http://localhost:3001/add/meal/${userId}`,
+            data: {
+              name: e.target[0].value,
+              calorie: Math.round(mealNutrition.calorie * 10) / 10,
+              protein: Math.round(mealNutrition.protein * 10) / 10,
+              carbohydrate: Math.round(mealNutrition.carbohydrate * 10) / 10,
+              lipid: Math.round(mealNutrition.lipid * 10) / 10,
+              fiber: Math.round(mealNutrition.fiber * 10) / 10,
+              ingredients: [...actualMeal.ingredients],
+            },
+          })
+            .then((result) => {
+              if (result.status === 200) {
+                navigate('/meals');
+              }
+            })
+            .catch((error) => console.log(error));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleSubmitCreateIngredientModal = (e: any) => {
+    e.preventDefault();
+
+    if (
+      ![...actualMeal.ingredients].find(
+        (ingredient) => ingredient.name === newIngredient.name
+      ) &&
+      !ingredients.find((ingredient) => ingredient.name === newIngredient.name)
+    ) {
+      setNewIngredient({
+        id: 0,
+        name: '',
+        quantity: 100,
+        calorie: 0,
+        carbohydrate: 0,
+        protein: 0,
+        lipid: 0,
+        fiber: 0,
+      });
+
+      setActualMeal({
+        ...actualMeal,
+        ingredients: [
+          ...actualMeal.ingredients,
+          {
+            id: 0,
+            name: newIngredient.name,
+            quantity: Number(newIngredient.quantity),
+            calorie: Number(newIngredient.calorie),
+            carbohydrate: Number(newIngredient.carbohydrate),
+            protein: Number(newIngredient.protein),
+            lipid: Number(newIngredient.lipid),
+            fiber: Number(newIngredient.fiber),
+          },
+        ],
+      });
+      setIsCreateIngredientModalOpen(false);
+
+      axios({
+        method: 'post',
+        url: 'http://localhost:3001/add/ingredient',
+        data: [
+          newIngredient.name,
+          newIngredient.quantity,
+          newIngredient.calorie,
+          newIngredient.protein,
+          newIngredient.carbohydrate,
+          newIngredient.lipid,
+          newIngredient.fiber,
+        ],
+      })
+        .then((result) => {
+          if ((result.status = 200)) {
+            setIsCreateIngredientModalOpen(false);
+            dispatch(getIngredients());
+          }
+        })
+        .catch((error) => {
+          setErrorMsg(error.response.data.message);
+        });
+    } else {
+      setErrorMsg('Un ingrédient avec le même nom existe déjà');
+    }
+  };
 
   useEffect(() => {
     let calories = 0;
@@ -141,12 +283,12 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
     let lipids = 0;
     let fibers = 0;
 
-    for (let i = 0; i < mealIngredients.length; i++) {
-      calories += mealIngredients[i].calorie;
-      carbohydrates += mealIngredients[i].carbohydrate;
-      proteins += mealIngredients[i].protein;
-      lipids += mealIngredients[i].lipid;
-      fibers += mealIngredients[i].fiber;
+    for (let i = 0; i < actualMeal.ingredients.length; i++) {
+      calories += actualMeal.ingredients[i].calorie;
+      carbohydrates += actualMeal.ingredients[i].carbohydrate;
+      proteins += actualMeal.ingredients[i].protein;
+      lipids += actualMeal.ingredients[i].lipid;
+      fibers += actualMeal.ingredients[i].fiber;
     }
     setMealNutrition({
       ...mealNutrition,
@@ -156,7 +298,12 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
       lipid: lipids,
       fiber: fibers,
     });
-  }, [mealIngredients]);
+  }, [actualMeal.ingredients]);
+
+  useEffect(() => {
+    const meal = meals.find((meal) => Number(meal.id) === Number(mealId));
+    meal && setActualMeal(meal);
+  }, []);
 
   return (
     <div className='createMeal'>
@@ -179,7 +326,7 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
             {searchResult?.map((ingredient) => (
               <div
                 className={
-                  [...mealIngredients].find(
+                  [...actualMeal.ingredients].find(
                     (mealIngredient) => mealIngredient.name === ingredient.name
                   )
                     ? 'createMeal__result__element createMeal__result__element__already'
@@ -189,7 +336,7 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
                 key={ingredient.name}
               >
                 <div>{ingredient.name}</div>
-                {[...mealIngredients].find(
+                {[...actualMeal.ingredients].find(
                   (mealIngredient) => mealIngredient.name === ingredient.name
                 ) && (
                   <div className='createMeal__result__element__already'>
@@ -268,14 +415,16 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
             className='createMeal__ingredients__name__input'
             type='text'
             id='mealName'
-            value={mealName}
-            onChange={(e) => setMealName(e.target.value)}
+            value={actualMeal.name}
+            onChange={(e) =>
+              setActualMeal({ ...actualMeal, name: e.target.value })
+            }
             required
           />
         </div>
 
-        {mealIngredients.length > 0 ? (
-          mealIngredients.map((ingredient) => (
+        {actualMeal.ingredients.length > 0 ? (
+          actualMeal.ingredients.map((ingredient) => (
             <div
               className='createMeal__ingredients__ingredient'
               key={ingredient.name}
@@ -389,7 +538,7 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
           <div className='createMeal__ingredients__errorMsg'>{errorMsg}</div>
         )}
 
-        {mealIngredients.length > 0 && (
+        {actualMeal.ingredients.length > 0 && (
           <div className='createMeal__ingredients__buttons'>
             <button
               type='submit'

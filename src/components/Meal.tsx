@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-
+import Moment from 'moment';
 import { getMeals } from '../state/action-creators';
 import { IMeal } from '../state/meal';
 
@@ -44,7 +44,7 @@ const Meal: React.FC<Iprops> = (props) => {
   };
   const handleModify = (e: any) => {
     e.stopPropagation();
-    navigate(`/modify/meal/${userId}`);
+    navigate(`/modify/meal/${props.meal.id}`);
   };
 
   return (
@@ -83,7 +83,9 @@ const Meal: React.FC<Iprops> = (props) => {
       <div className='meal__info'>
         <div className='meal__info__element'>
           <div className='meal__info__element__name'>Création</div>
-          <div className='meal__info__element__value'> 31/08/2022</div>
+          <div className='meal__info__element__value'>
+            {Moment(props.meal.updated_at).format('DD/MM/YYYY')}
+          </div>
         </div>
         <div className='meal__info__element'>
           <div className='meal__info__element__name'>Calories</div>
