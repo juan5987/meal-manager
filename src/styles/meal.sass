@@ -39,12 +39,70 @@
 
     &__buttons
         display: flex
-        justify-content: space-around
+        justify-content: space-between
         align-items: center
-        padding: 1rem 0
+        padding: 1rem 5rem
         border-top: 1px solid white
         margin-top: 1rem
 
         &__button:hover
             color: $primary
             cursor: pointer
+
+.modal
+    display: flex
+    align-items: center
+    justify-content: center
+    background-color: rgba(0,0,0,.6)
+    position: fixed
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+
+.meal__deleteModal
+    position: absolute
+    background-color: rgba(0,0,0)
+    padding: 2rem
+    border-radius: 1.5rem
+
+    &__title
+        text-align: center
+        margin-bottom: .5rem
+        font-size: 1.2rem
+
+    &__name
+        color: $primary
+        text-align: center
+        margin-bottom: 1rem
+        font-size: 1.2rem
+
+    &__buttons
+        display: flex
+        justify-content: space-around
+
+        &__submit, &__cancel
+            width: 100px
+            margin: 0 auto
+            font-size: 1rem
+            font-weight: bold
+            padding: .5rem 0
+            border-radius: 1.5rem
+
+        &__submit
+            background-color: $primary
+            color: white
+
+            &:hover
+                background-color: white
+                color: $primary
+                cursor: pointer
+
+        &__cancel
+            background-color: $red
+            color: white
+
+            &:hover
+                background-color: white
+                color: $red
+                cursor: pointer

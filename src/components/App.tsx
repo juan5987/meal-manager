@@ -17,6 +17,8 @@ import PasswordModif from './PasswordModif';
 import AccountDelete from './AccountDelete';
 import Meals from './Meals';
 import CreateMeal from './CreateMeal';
+import MealDetails from './MealDetails';
+import MealModify from './MealModify';
 
 import '../styles/app.sass';
 
@@ -40,6 +42,8 @@ const App: React.FC<IApp> = ({ isLogged }) => {
         <Route path='/profil/delete' element={<AccountDelete />} />
         <Route path='/meals' element={<Meals />} />
         <Route path='/create/meal' element={<CreateMeal />} />
+        <Route path='/meal/:id' element={<MealDetails />} />
+        <Route path='/modify/meal/:id' element={<MealModify />} />
       </Routes>
     </div>
   );

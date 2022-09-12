@@ -168,33 +168,9 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
         </div>
         <div className='meals__meals__wrapper'>
           {filteredMeals.length > 0 ? (
-            filteredMeals.map((meal: IMeal) => {
-              if (meal.name.length > 25) {
-                return (
-                  <Meal
-                    name={meal.name.slice(0, 25) + '...'}
-                    calorie={Math.round(meal.calorie)}
-                    carbohydrate={meal.carbohydrate}
-                    protein={meal.protein}
-                    lipid={meal.lipid}
-                    fiber={meal.fiber}
-                    key={meal.name}
-                  />
-                );
-              } else {
-                return (
-                  <Meal
-                    name={meal.name}
-                    calorie={Math.round(meal.calorie)}
-                    carbohydrate={meal.carbohydrate}
-                    protein={meal.protein}
-                    lipid={meal.lipid}
-                    fiber={meal.fiber}
-                    key={meal.name}
-                  />
-                );
-              }
-            })
+            filteredMeals.map((meal: IMeal) => (
+              <Meal meal={meal} key={meal.name} />
+            ))
           ) : (
             <p className='meals__meals__wrapper__nomeal'>
               Aucun repas enregistré

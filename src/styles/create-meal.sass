@@ -100,6 +100,10 @@
         background-color: rgba(0,0,0,.6)
         padding: 1rem
 
+        &__title
+            color: $primary
+            margin-bottom: 1rem
+
         &__errorMsg
             color: white
             background-color: red
@@ -245,7 +249,7 @@
                 font-weight: bold
                 border-radius: 1rem
                 width: 10rem
-                background-color: #cf1111
+                background-color: $red
                 color: white
 
                 &:hover
@@ -258,6 +262,20 @@
         &__empty
             font-size: 1.2rem
             font-weight: bold
+
+        &__button
+            background-color: white
+            color: $primary
+            padding: .6rem 2rem
+            border: none
+            font-size: 1.2rem
+            font-weight: bold
+            border-radius: 1rem
+
+            &:hover
+                background-color: $primary
+                color: white
+                cursor: pointer
             
     &__nutrition
         display: flex
@@ -439,7 +457,7 @@
                         font-size: 1.2rem
                         font-weight: bold
                         border-radius: 1rem
-                        background-color: #cf1111
+                        background-color: $red
                         color: white
                         width: 7rem
 
