@@ -17,7 +17,8 @@ export interface IMeal {
   carbohydrate: number;
   lipid: number;
   fiber: number;
-  ingredients: [IIngredient];
+  ingredients: IIngredient[];
+  updated_at: any;
 }
 
 export interface INutrition {

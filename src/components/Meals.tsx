@@ -37,6 +37,7 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
       sortByProperty(sortValue.current.value, orderValue.current.value)
     );
     updatedMeals && setfilteredMeals(updatedMeals);
+    console.log(sortValue.current);
   };
 
   const handleSearchByName = (e: { target: { value: string } }) => {
@@ -67,7 +68,7 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
               >
                 <option
                   className='meals__wrapper__filters__filter__option'
-                  value='date'
+                  value='updated_at'
                 >
                   Date de création
                 </option>
@@ -168,33 +169,9 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
         </div>
         <div className='meals__meals__wrapper'>
           {filteredMeals.length > 0 ? (
-            filteredMeals.map((meal: IMeal) => {
-              if (meal.name.length > 25) {
-                return (
-                  <Meal
-                    name={meal.name.slice(0, 25) + '...'}
-                    calorie={Math.round(meal.calorie)}
-                    carbohydrate={meal.carbohydrate}
-                    protein={meal.protein}
-                    lipid={meal.lipid}
-                    fiber={meal.fiber}
-                    key={meal.name}
-                  />
-                );
-              } else {
-                return (
-                  <Meal
-                    name={meal.name}
-                    calorie={Math.round(meal.calorie)}
-                    carbohydrate={meal.carbohydrate}
-                    protein={meal.protein}
-                    lipid={meal.lipid}
-                    fiber={meal.fiber}
-                    key={meal.name}
-                  />
-                );
-              }
-            })
+            filteredMeals.map((meal: IMeal) => (
+              <Meal meal={meal} key={meal.name} />
+            ))
           ) : (
             <p className='meals__meals__wrapper__nomeal'>
               Aucun repas enregistré
