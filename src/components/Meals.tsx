@@ -167,6 +167,11 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
             </Link>
           </div>
         </div>
+        {filteredMeals.length > 0 && (
+          <div className='meals__meals__info'>
+            Cliquez sur un repas pour voir plus détails
+          </div>
+        )}
         <div className='meals__meals__wrapper'>
           {filteredMeals.length > 0 ? (
             filteredMeals.map((meal: IMeal) => (
