@@ -17,6 +17,8 @@ const Meal: React.FC<Iprops> = (props) => {
   const dispatch = useDispatch();
   const navigate: NavigateFunction = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isModifyLabelModalOpen, setIsModifyLabelModalOpen] = useState(false);
+  const [isDeleteLabelModalOpen, setIsDeleteLabelModalOpen] = useState(false);
 
   const handleOpenDeleteModal = (e: any) => {
     setIsDeleteModalOpen(true);
@@ -117,7 +119,15 @@ const Meal: React.FC<Iprops> = (props) => {
         </div>
       </div>
       <div className='meal__buttons'>
-        <div className='meal__buttons__button' onClick={handleModify}>
+        <div
+          className='meal__buttons__button'
+          onClick={handleModify}
+          onMouseOver={() => setIsModifyLabelModalOpen(true)}
+          onMouseLeave={() => setIsModifyLabelModalOpen(false)}
+        >
+          {isModifyLabelModalOpen && (
+            <div className='meal__buttons__labelModal'>Modifier</div>
+          )}
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='28'
@@ -140,7 +150,16 @@ const Meal: React.FC<Iprops> = (props) => {
             ></path>
           </svg>
         </div>
-        <div className='meal__buttons__button' onClick={handleOpenDeleteModal}>
+
+        <div
+          className='meal__buttons__button'
+          onClick={handleOpenDeleteModal}
+          onMouseOver={() => setIsDeleteLabelModalOpen(true)}
+          onMouseLeave={() => setIsDeleteLabelModalOpen(false)}
+        >
+          {isDeleteLabelModalOpen && (
+            <div className='meal__buttons__labelModal'>Supprimer</div>
+          )}
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='28'

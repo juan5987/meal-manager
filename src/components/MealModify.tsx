@@ -403,159 +403,161 @@ const MealModify: React.FC<IMealModify> = ({ meals, ingredients }) => {
           </div>
         </div>
       </div>
-      <form className='createMeal__ingredients' onSubmit={handleSubmit}>
-        <div className='createMeal__ingredients__name'>
-          <label
-            className='createMeal__ingredients__name__label'
-            htmlFor='mealName'
-          >
-            Nom du repas
-          </label>
-          <input
-            className='createMeal__ingredients__name__input'
-            type='text'
-            id='mealName'
-            value={actualMeal.name}
-            onChange={(e) =>
-              setActualMeal({ ...actualMeal, name: e.target.value })
-            }
-            required
-          />
-        </div>
-
-        {actualMeal.ingredients.length > 0 ? (
-          actualMeal.ingredients.map((ingredient) => (
-            <div
-              className='createMeal__ingredients__ingredient'
-              key={ingredient.name}
+      {!isCreateIngredientModalOpen && (
+        <form className='createMeal__ingredients' onSubmit={handleSubmit}>
+          <div className='createMeal__ingredients__name'>
+            <label
+              className='createMeal__ingredients__name__label'
+              htmlFor='mealName'
             >
-              <div className='createMeal__ingredients__ingredient__name'>
-                {ingredient.name}
+              Nom du repas
+            </label>
+            <input
+              className='createMeal__ingredients__name__input'
+              type='text'
+              id='mealName'
+              value={actualMeal.name}
+              onChange={(e) =>
+                setActualMeal({ ...actualMeal, name: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          {actualMeal.ingredients.length > 0 ? (
+            actualMeal.ingredients.map((ingredient) => (
+              <div
+                className='createMeal__ingredients__ingredient'
+                key={ingredient.name}
+              >
+                <div className='createMeal__ingredients__ingredient__name'>
+                  {ingredient.name}
+                </div>
+                <div className='createMeal__ingredients__ingredient__nutrition'>
+                  <div
+                    className='createMeal__ingredients__ingredient__nutrition__element'
+                    style={{ width: '90px' }}
+                  >
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
+                      Quantité (g)
+                    </div>
+                    <input
+                      type='number'
+                      value={ingredient.quantity}
+                      className='createMeal__ingredients__ingredient__nutrition__element__input'
+                      data-mealname={ingredient.name}
+                      onChange={handleQuantityChange}
+                    />
+                  </div>
+                  <div className='createMeal__ingredients__ingredient__nutrition__element'>
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
+                      Kcal
+                    </div>
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__value'>
+                      {ingredient.calorie.toFixed(0)}
+                    </div>
+                  </div>
+                  <div className='createMeal__ingredients__ingredient__nutrition__element'>
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
+                      Glucides
+                    </div>
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__value'>
+                      {ingredient.carbohydrate.toFixed(1)} g
+                    </div>
+                  </div>
+                  <div className='createMeal__ingredients__ingredient__nutrition__element'>
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
+                      Protéines
+                    </div>
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__value'>
+                      {ingredient.protein.toFixed(1)} g
+                    </div>
+                  </div>
+                  <div className='createMeal__ingredients__ingredient__nutrition__element'>
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
+                      Lipides
+                    </div>
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__value'>
+                      {ingredient.lipid.toFixed(1)} g
+                    </div>
+                  </div>
+                  <div className='createMeal__ingredients__ingredient__nutrition__element'>
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
+                      Fibres
+                    </div>
+                    <div className='createMeal__ingredients__ingredient__nutrition__element__value'>
+                      {ingredient.fiber.toFixed(1)} g
+                    </div>
+                  </div>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    stroke='currentColor'
+                    strokeWidth='2'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    className='createMeal__ingredients__ingredient__nutrition__trash'
+                    onClick={handleDeleteIngredient}
+                    data-mealname={ingredient.name}
+                  >
+                    <polyline
+                      data-mealname={ingredient.name}
+                      points='3 6 5 6 21 6'
+                    ></polyline>
+                    <path
+                      data-mealname={ingredient.name}
+                      d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'
+                    ></path>
+                    <line
+                      data-mealname={ingredient.name}
+                      x1='10'
+                      y1='11'
+                      x2='10'
+                      y2='17'
+                    ></line>
+                    <line
+                      data-mealname={ingredient.name}
+                      x1='14'
+                      y1='11'
+                      x2='14'
+                      y2='17'
+                    ></line>
+                  </svg>
+                </div>
               </div>
-              <div className='createMeal__ingredients__ingredient__nutrition'>
-                <div
-                  className='createMeal__ingredients__ingredient__nutrition__element'
-                  style={{ width: '90px' }}
-                >
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
-                    Quantité (g)
-                  </div>
-                  <input
-                    type='number'
-                    value={ingredient.quantity}
-                    className='createMeal__ingredients__ingredient__nutrition__element__input'
-                    data-mealname={ingredient.name}
-                    onChange={handleQuantityChange}
-                  />
-                </div>
-                <div className='createMeal__ingredients__ingredient__nutrition__element'>
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
-                    Kcal
-                  </div>
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__value'>
-                    {ingredient.calorie.toFixed(0)}
-                  </div>
-                </div>
-                <div className='createMeal__ingredients__ingredient__nutrition__element'>
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
-                    Glucides
-                  </div>
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__value'>
-                    {ingredient.carbohydrate.toFixed(1)} g
-                  </div>
-                </div>
-                <div className='createMeal__ingredients__ingredient__nutrition__element'>
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
-                    Protéines
-                  </div>
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__value'>
-                    {ingredient.protein.toFixed(1)} g
-                  </div>
-                </div>
-                <div className='createMeal__ingredients__ingredient__nutrition__element'>
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
-                    Lipides
-                  </div>
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__value'>
-                    {ingredient.lipid.toFixed(1)} g
-                  </div>
-                </div>
-                <div className='createMeal__ingredients__ingredient__nutrition__element'>
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__name'>
-                    Fibres
-                  </div>
-                  <div className='createMeal__ingredients__ingredient__nutrition__element__value'>
-                    {ingredient.fiber.toFixed(1)} g
-                  </div>
-                </div>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  className='createMeal__ingredients__ingredient__nutrition__trash'
-                  onClick={handleDeleteIngredient}
-                  data-mealname={ingredient.name}
-                >
-                  <polyline
-                    data-mealname={ingredient.name}
-                    points='3 6 5 6 21 6'
-                  ></polyline>
-                  <path
-                    data-mealname={ingredient.name}
-                    d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'
-                  ></path>
-                  <line
-                    data-mealname={ingredient.name}
-                    x1='10'
-                    y1='11'
-                    x2='10'
-                    y2='17'
-                  ></line>
-                  <line
-                    data-mealname={ingredient.name}
-                    x1='14'
-                    y1='11'
-                    x2='14'
-                    y2='17'
-                  ></line>
-                </svg>
-              </div>
+            ))
+          ) : (
+            <div className='createMeal__ingredients__empty'>
+              Aucun ingrédient, ajoutez-en à l'aide de la barre de recherche
             </div>
-          ))
-        ) : (
-          <div className='createMeal__ingredients__empty'>
-            Aucun ingrédient, ajoutez-en à l'aide de la barre de recherche
-          </div>
-        )}
+          )}
 
-        {errorMsg && (
-          <div className='createMeal__ingredients__errorMsg'>{errorMsg}</div>
-        )}
+          {errorMsg && (
+            <div className='createMeal__ingredients__errorMsg'>{errorMsg}</div>
+          )}
 
-        {actualMeal.ingredients.length > 0 && (
-          <div className='createMeal__ingredients__buttons'>
-            <button
-              type='submit'
-              className='createMeal__ingredients__buttons__submit'
-            >
-              Enregistrer
-            </button>
-            <button
-              type='button'
-              className='createMeal__ingredients__buttons__cancel'
-              onClick={() => navigate('/meals')}
-            >
-              Annuler
-            </button>
-          </div>
-        )}
-      </form>
+          {actualMeal.ingredients.length > 0 && (
+            <div className='createMeal__ingredients__buttons'>
+              <button
+                type='submit'
+                className='createMeal__ingredients__buttons__submit'
+              >
+                Enregistrer
+              </button>
+              <button
+                type='button'
+                className='createMeal__ingredients__buttons__cancel'
+                onClick={() => navigate('/meals')}
+              >
+                Annuler
+              </button>
+            </div>
+          )}
+        </form>
+      )}
       {isCreateIngredientModalOpen && (
         <div className='createMeal__modal'>
           <h2 className='createMeal__modal__title'>Création d'un aliment</h2>
