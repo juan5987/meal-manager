@@ -117,7 +117,7 @@ const Meal: React.FC<Iprops> = (props) => {
         </div>
       </div>
       <div className='meal__buttons'>
-        <div className='meal__buttons__button'>
+        <div className='meal__buttons__button' onClick={handleModify}>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='28'
@@ -140,7 +140,7 @@ const Meal: React.FC<Iprops> = (props) => {
             ></path>
           </svg>
         </div>
-        <div className='meal__buttons__button'>
+        <div className='meal__buttons__button' onClick={handleOpenDeleteModal}>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='28'
