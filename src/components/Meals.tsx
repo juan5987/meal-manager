@@ -37,6 +37,7 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
       sortByProperty(sortValue.current.value, orderValue.current.value)
     );
     updatedMeals && setfilteredMeals(updatedMeals);
+    console.log(sortValue.current);
   };
 
   const handleSearchByName = (e: { target: { value: string } }) => {
@@ -67,7 +68,7 @@ const Meals: React.FC<IMeals> = ({ meals }) => {
               >
                 <option
                   className='meals__wrapper__filters__filter__option'
-                  value='date'
+                  value='updated_at'
                 >
                   Date de création
                 </option>
