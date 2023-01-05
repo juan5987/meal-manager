@@ -1,0 +1,143 @@
+@import 'vars'
+    
+.accountDelete
+    width: 100%
+    height: 100vh
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    color: white
+    background-image: url('../images/food-3270461.jpg')
+    background-size: cover
+
+    &__form
+        width: 500px
+        background-color: $dark
+        padding: 2rem
+        border-radius: 15px
+        text-align: center
+        
+        &__title
+            margin-bottom: 2rem
+            text-transform: uppercase
+            border: 2px solid white
+            padding: .5em 1em
+
+        &__text
+            font-size: 1.2rem
+            text-align: center
+            margin-bottom: 1rem
+
+        &__wrapper
+            display: flex
+            flex-direction: column
+            margin-bottom: 1em
+
+            &__label
+                text-align: left
+                margin-bottom: .2em
+                font-weight: bold
+                color: rgb(238, 195, 4)
+            
+            &__input
+                color: $dark
+                font-size: 1.5rem
+                font-weight: bold
+                padding: .25em .5em
+
+                &__visibility
+                    position: relative
+                    height: 0
+                    width: 100%
+
+                    &__icon
+                        line-height: 100%
+                        position: absolute
+                        right: 10px
+                        bottom: 10px
+                        color: $dark
+
+                        &:hover
+                            cursor: pointer
+                            color: rgb(238, 195, 4)
+                        
+
+        &__submit
+            color: $dark
+            border: 2px solid $dark
+            padding: 0.5em 1.5em
+            font-size: 1.3em
+            font-weight: bold
+            border-radius: 7px
+            background-color: rgb(238, 195, 4)
+            display: block
+            margin: 0 auto
+            margin-top: 1em
+
+            &:hover
+                cursor: pointer
+                background-color: white
+
+        &__cancel
+            color: $dark
+            border: 2px solid $dark
+            padding: 0.5em 1.5em
+            font-size: 1.3em
+            font-weight: bold
+            border-radius: 7px
+            background-color: white
+            display: block
+            margin: 0 auto
+            margin-top: 1em
+            text-decoration: none
+
+            &:hover
+                cursor: pointer
+                color: rgb(238, 195, 4)
+
+
+        &__error
+            font-size: 1.2em
+            font-weight: bold
+            background-color: red
+            color: white
+            border-radius: 5px
+            padding: .5rem 1rem
+            margin: 1em 0
+
+        &__success
+            font-size: 1.2em
+            font-weight: bold
+            background-color: green
+            color: white
+            border-radius: 5px
+            padding: .5rem 1rem
+            margin: 1em 0
+
+        &__loader
+            display: flex
+            justify-content: center
+            align-items: center
+            margin-top: 1rem
+
+            &__circle 
+                border: 5px solid #e7d8ffc4
+                border-top: 5px solid rgb(238, 195, 4)
+                border-radius: 50%
+                width: 30px
+                height: 30px
+                animation: spin 2s linear infinite
+                margin-right: .5rem
+        
+
+.warning
+    color: red
+    border: 1px solid red
+    padding: 1rem
+
+@keyframes spin 
+  0% 
+      transform: rotate(0deg)
+  100% 
+      transform: rotate(360deg)
